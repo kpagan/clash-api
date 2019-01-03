@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
         MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule,
-        MatProgressSpinnerModule } from '@angular/material';
+        MatProgressSpinnerModule, MatCardTitle} from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';

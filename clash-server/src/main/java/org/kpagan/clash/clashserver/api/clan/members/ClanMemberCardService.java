@@ -17,31 +17,29 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ClanMemberCardService {
 
-	private static final String WANTED_CARD_NAME = "Wizard";
-
-	private static final int WANTED_CARD_COUNT = 50;
-
 	private static final DecimalFormat percentageFormatter = new DecimalFormat("#");
 
 	@Autowired
 	private ClanMemberListService clanMemberListService;
-	
+
 	@Autowired
 	private PlayerService playerService;
 
-	public List<PlayerDetailsInfo> getMemberPlayersCards(String clanTag) {
+	public List<PlayerDetailsInfo> getMemberPlayersCards(String clanTag, String requestedCard, Integer count) {
 		List<PlayerDetailsInfo> eligiblePlayers = new ArrayList<>();
 		ClanMemberListInfo clanMembers = clanMemberListService.getClanMembers(clanTag);
 		int totalMembers = clanMembers.getItems().size();
 		int current = 0;
 		for (ClanMemberInfo member : clanMembers.getItems()) {
-			double progress = ((double)++current/totalMembers)*100;
+			double progress = ((double) ++current / totalMembers) * 100;
 			log.info("Looking for member {}. Progress: {}%", member.getName(), percentageFormatter.format(progress));
-			
+
 			if (member.getDonations() == 0) {
 				PlayerDetailsInfo player = playerService.getPlayer(member.getTag());
-				Optional<CardsInfo> wantedCard = player.getCards().stream().filter(card -> card.getName().equals(WANTED_CARD_NAME) && card.getCount() >= WANTED_CARD_COUNT).findFirst();
+				Optional<CardsInfo> wantedCard = player.getCards().stream()
+						.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
 				if (wantedCard.isPresent()) {
+					player.getCards().forEach(CardsInfo::correctLevels);
 					eligiblePlayers.add(player);
 				}
 			}

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,11 +24,12 @@ public class QueryController {
 
 	@Autowired
 	private Map<String, QueryHandler> queryHandlers;
-	
-	@RequestMapping(value = {"/{queryId}/{query}", "/feed/{queryId}"}, method = RequestMethod.GET)
-	public ResponseEntity<QueryResponse> handleQuery(@PathVariable("queryId") String queryId, @PathVariable("query") Optional<String> query) {
-		QueryResponse QueryResponse = queryHandlers.get(queryId).handle(query);
+
+	@RequestMapping(value = { "/{queryId}/{query}" }, method = RequestMethod.GET)
+	public ResponseEntity<QueryResponse> handleQuery(@PathVariable("queryId") String queryId,
+			@PathVariable("query") Optional<String> query, @RequestParam Map<String, String> params) {
+		QueryResponse QueryResponse = queryHandlers.get(queryId).handle(query, params);
 		return new ResponseEntity<QueryResponse>(QueryResponse, HttpStatus.OK);
 	}
-	
+
 }
