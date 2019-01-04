@@ -39,11 +39,36 @@ public class ClanMemberCardService {
 				Optional<CardsInfo> wantedCard = player.getCards().stream()
 						.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
 				if (wantedCard.isPresent()) {
-					player.getCards().forEach(CardsInfo::correctLevels);
 					eligiblePlayers.add(player);
 				}
 			}
 		}
 		return eligiblePlayers;
+	}
+
+	/**
+	 * Keeps only the data that is interesting for the "Trade Cards" functionality<br/>
+	 * the properties kept are:
+	 * <ul>
+	 * 	<li>tag</tag>
+	 * 	<li>name</li>
+	 * 	<li>currentDeck</li>
+	 * 	<li>currentFavouriteCard</li>
+	 * </ul>
+	 * @param players
+	 * @return
+	 */
+	public List<PlayerDetailsInfo> cleanUp(List<PlayerDetailsInfo> players) {
+		List<PlayerDetailsInfo> cleaned = new ArrayList<>();
+		for (PlayerDetailsInfo player : players) {
+			PlayerDetailsInfo clean = new PlayerDetailsInfo();
+			clean.setTag(player.getTag());
+			clean.setName(player.getName());
+			clean.setCurrentDeck(player.getCurrentDeck());
+			clean.getCurrentDeck().forEach(CardsInfo::correctLevels);
+			clean.setCurrentFavouriteCard(player.getCurrentFavouriteCard());
+			cleaned.add(clean);
+		}
+		return cleaned;
 	}
 }

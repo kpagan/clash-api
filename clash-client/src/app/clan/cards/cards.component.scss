@@ -1,3 +1,48 @@
+.player-box {
+    float:left;
+    margin: 10px;
+    display: block;
+    height: 100%;
+    border: 1px #000  solid;
+    border-radius: 4px;
+}
+
 .member-cards {
-    max-width: 50%;
+    min-width: 500px;
+    // background-color: transparent !important;
+}
+
+.card-container {
+    position: relative;
+    float: left;
+}
+
+.card-image {
+    width: 80px;
+    min-width: 80px;
+    float: left;
+    transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+}
+
+.card-level {
+    position: absolute;
+    right: 8px;
+    width: 68px;
+    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 40px;
+    text-shadow: 0 1px 1px #000 -1px 1px #000;
+    text-align: center;
+    line-height: 1.15;
+    color: rgb(180, 180, 180);
+}
+
+.card-count {
+    text-align: center;
+    display: block;
+    background-color: transparent;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-top: 4px;
+    padding-left: 4px;
 }

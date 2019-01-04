@@ -1,30 +1,43 @@
-<div class="mat-elevation-z8">
-<!--  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+<div>
+  <!--  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
     <mat-spinner></mat-spinner>
   </div>
 -->
-  <button type="button" (click)="search()">Search</button>
-  <mat-card class="member-cards" *ngFor="let player of players">
-    <mat-card-header>
-      <mat-card-title>{{ player.name }}</mat-card-title>
-      <mat-card-subtitle>{{ player.tag }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="card-container" *ngFor="let card of player.currentDeck">
-        <img src="{{card.iconUrls.medium}}" class="card-image" />
-        <span class="card-level">{{card.correctLevel}}</span>
-        <small>{{card.count}} / {{card.maxCardLevel}}</small>
-      </div>
-      <div class="clearfix"></div>
-      <div class="card-container">
-          <img src="{{player.currentFavouriteCard.iconUrls.medium}}" class="card-image" />
-          <span class="card-level">{{card.level}}</span>
-          <small>{{player.currentFavouriteCard.name}}</small>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
+  <button mat-raised-button type="button" (click)="search()">Search</button>
+  <div class="clearfix"></div>
+  <div class="player-box mat-elevation-z8" *ngFor="let player of players">
+    <mat-card class="member-cards">
+      <mat-card-header>
+        <mat-card-title>{{ player.name }}</mat-card-title>
+        <mat-card-subtitle>{{ player.tag }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h3 mat-line>Current deck</h3>
+        <mat-grid-list cols="4" rowHeight="1:1">
+          <mat-grid-tile *ngFor="let card of player.currentDeck">
+            <div class="card-container">
+              <img src="{{card.iconUrls.medium}}" class="card-image" matTooltip="{{card.name}}" />
+              <span class="card-level">{{card.correctLevel}}</span>
+              <small class="card-count">{{card.count}} / {{card.maxCardLevel}}</small>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-divider></mat-divider>
+        <h3 mat-line>Current favourite card</h3>
+        <mat-grid-list cols="4" rowHeight="120px">
+          <mat-grid-tile>
+            <div class="card-container">
+              <img src="{{player.currentFavouriteCard.iconUrls.medium}}" class="card-image" />
+              <small class="card-count">{{player.currentFavouriteCard.name}}</small>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <div class="clearfix"></div>
+      </mat-card-content>
+      <!-- <mat-card-actions>
       <button mat-button>LIKE</button>
       <button mat-button>SHARE</button>
-    </mat-card-actions>
-  </mat-card>
+    </mat-card-actions> -->
+    </mat-card>
+  </div>
 </div>

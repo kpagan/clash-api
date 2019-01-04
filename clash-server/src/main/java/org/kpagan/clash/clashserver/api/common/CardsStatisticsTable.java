@@ -48,7 +48,7 @@ public class CardsStatisticsTable {
 	};
 
 	public static int getMaxCardsToLevel(int level, int maxLevel) {
-		return LEVELS.get(CardType.ofMaxLevel(maxLevel)).get(level - 1);
+		return LEVELS.get(CardType.ofMaxLevel(maxLevel)).get(level);
 	}
 
 }

@@ -1,7 +1,7 @@
-import { ClanBaseModel } from './ClanBaseModel';
+import { ClanBaseModel } from '../api/model/ClanBaseModel';
 import { LeagueStatisticsModel } from './LeagueStatisticsModel';
 import { AchievementsModel } from './AchievementsModel';
-import { CardsModel } from './CardsModel';
+import { CardsModel } from '../api/model/CardsModel';
 import { FavouriteCardModel } from './FavouriteCardModel';
 import { ArenaModel } from '../api/model/ArenaModel';
 

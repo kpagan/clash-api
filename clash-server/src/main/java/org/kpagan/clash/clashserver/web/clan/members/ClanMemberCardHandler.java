@@ -21,7 +21,7 @@ public class ClanMemberCardHandler implements QueryHandler {
 	private static final String WANTED_CARD_COUNT = "no";
 
 	@Autowired
-	private ClanMemberCardService carService;
+	private ClanMemberCardService cardService;
 	
 	@Override
 	public QueryResponse handle(Optional<String> query, Map<String, String> params) {
@@ -30,7 +30,7 @@ public class ClanMemberCardHandler implements QueryHandler {
 		if (query.isPresent() && params.containsKey(WANTED_CARD_NAME) && params.containsKey(WANTED_CARD_COUNT)) {
 			String requestedCard = params.get(WANTED_CARD_NAME);
 			Integer count = Integer.parseInt(params.get(WANTED_CARD_COUNT));
-			List<PlayerDetailsInfo> players = carService.getMemberPlayersCards(query.get(), requestedCard, count);
+			List<PlayerDetailsInfo> players = cardService.cleanUp(cardService.getMemberPlayersCards(query.get(), requestedCard, count));
 			response.setPlayers(players);
 		}
 		return response;

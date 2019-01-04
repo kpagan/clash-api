@@ -10,13 +10,8 @@ import { ClanModule } from './clan/clan.module';
 import { MessageComponent } from './api/message/message.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
-        MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule,
-        MatProgressSpinnerModule, MatCardTitle} from '@angular/material';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
 import { TestTableComponent } from './test-table/test-table.component';
+import { AppMaterialModule } from './app.material.module';
 
 @NgModule({
   declarations: [
@@ -29,23 +24,9 @@ import { TestTableComponent } from './test-table/test-table.component';
     FormsModule,
     BrowserAnimationsModule,
     LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
     AppRoutingModule,
     HttpClientModule,
+    AppMaterialModule,
     PlayerModule,
     ClanModule
   ],
