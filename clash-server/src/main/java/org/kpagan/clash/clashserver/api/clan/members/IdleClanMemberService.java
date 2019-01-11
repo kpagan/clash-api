@@ -2,11 +2,13 @@ package org.kpagan.clash.clashserver.api.clan.members;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogInfo;
+import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogRepository;
 import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class IdleClanMemberService {
 
 	@Autowired
 	private BattleLogService battleLogService;
+	
+	@Autowired
+	private BattleLogRepository repository;
 
 	/**
 	 * Returns a list of idle players of a clan.
@@ -42,18 +47,30 @@ public class IdleClanMemberService {
 			double progress = ((double)++current/totalMembers)*100;
 			log.info("Looking for member {}. Progress: {}%", member.getName(), percentageFormatter.format(progress)); 
 			if (member.getDonations() == 0) {
-				List<BattleLogInfo> battleLog = battleLogService.getBattleLog(member.getTag());
-				if (!CollectionUtils.isEmpty(battleLog)) {
-					// the 1st battleLog entry will be the most recent
-					BattleLogInfo battleLogInfo = battleLog.get(0);
-					LocalDate battleDate = LocalDate.parse(battleLogInfo.getBattleTime(), dateFormatter);
-					// if no battle has been done for the past 2 months then consider the player as idle
-					if (battleDate.isBefore(LocalDate.now().minusMonths(2L))) {
-						idlePlayers.add(member);
-					}
+				BattleLogInfo latestBattleLog = repository.findByPlayerTagAndTimestampAfter(member.getTag(), LocalDateTime.now().minusDays(1));
+				BattleLogInfo battleLogInfo = null;
+				if (latestBattleLog != null) {
+					battleLogInfo = latestBattleLog;
 				} else {
-					idlePlayers.add(member); // idle players for so long will have empty battle log
+					List<BattleLogInfo> battleLog = battleLogService.getBattleLog(member.getTag());
+					if (!CollectionUtils.isEmpty(battleLog)) {
+						// the 1st battleLog entry will be the most recent
+						battleLogInfo = battleLog.get(0);
+					} else {
+						// idle players for so long will have empty battle log
+						battleLogInfo = new BattleLogInfo();
+						// set battle time to a date longer that the threshold
+						battleLogInfo.setBattleTime(LocalDateTime.now().minusMonths(3L).format(dateFormatter));
+					}
 				}
+				LocalDate battleDate = LocalDate.parse(battleLogInfo.getBattleTime(), dateFormatter);
+				// if no battle has been done for the past 2 months then consider the player as idle
+				if (battleDate.isBefore(LocalDate.now().minusMonths(2L))) {
+					idlePlayers.add(member);
+				}
+				battleLogInfo.setTimestamp(LocalDateTime.now());
+				battleLogInfo.setPlayerTag(member.getTag());
+				repository.save(battleLogInfo);
 			}
 		}
 		return idlePlayers;
