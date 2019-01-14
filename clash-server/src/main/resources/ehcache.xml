@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ehcache>
+<ehcache>
+	<diskStore path="java.io.tmpdir" />
+	<cache name="player_details" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
+		<persistence strategy="none" />
+	</cache>
+	<cache name="player_battlelog" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
+		<persistence strategy="none" />
+	</cache>
+</ehcache>

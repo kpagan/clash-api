@@ -1,18 +1,15 @@
 package org.kpagan.clash.clashserver.api.player;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.kpagan.clash.clashserver.api.common.ArenaInfo;
 import org.kpagan.clash.clashserver.api.common.CardsInfo;
 import org.kpagan.clash.clashserver.api.common.ClanBaseInfo;
-import org.springframework.data.annotation.Id;
 
 import lombok.Data;
 
 @Data
 public class PlayerDetailsInfo {
-	@Id
 	private String tag;
 	private String name;
 	private Integer expLevel;
@@ -39,7 +36,4 @@ public class PlayerDetailsInfo {
 	private List<CardsInfo> cards;
 	private List<CardsInfo> currentDeck;
 	private FavouriteCardInfo currentFavouriteCard;
-	
-	private LocalDateTime timestamp;
-	
 }
