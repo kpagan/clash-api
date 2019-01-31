@@ -10,8 +10,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    AppMaterialModule,
     ReactiveFormsModule,
+    AppMaterialModule,
 
   ],
   providers: [CardsService]

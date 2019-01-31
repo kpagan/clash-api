@@ -3,6 +3,8 @@ import { MemberService } from './member.service';
 import { ClanMemberModel } from './ClanMemberModel';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { IdlePlayersDataSource } from './idle-players-datasource';
+import { ClanBaseComponent } from '../ClanBaseComponent';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -10,7 +12,7 @@ import { IdlePlayersDataSource } from './idle-players-datasource';
   templateUrl: './idle-players.component.html',
   styleUrls: ['./idle-players.component.scss']
 })
-export class IdlePlayersComponent implements OnInit {
+export class IdlePlayersComponent extends ClanBaseComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -26,17 +28,24 @@ export class IdlePlayersComponent implements OnInit {
   displayedColumns = this.columns.map(x => x.columnDef);
   dataSource: IdlePlayersDataSource;
 
-  constructor(private memberService: MemberService) { }
+  constructor(private memberService: MemberService, protected cookieService: CookieService) {
+    super(cookieService);
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.dataSource = new IdlePlayersDataSource(this.memberService);
-    this.dataSource.loadIdlePlayers('P9R9282L');
     // this.memberService.getIdlePlayers('P9R9282L')
     //   .subscribe(players => {
     //     this.dataSource = new MatTableDataSource<ClanMemberModel>(players.items);
     //     this.dataSource.sort = this.sort;
     //     this.dataSource.paginator = this.paginator;
     //   });
+  }
+
+  search() {
+    super.search();
+    this.dataSource.loadIdlePlayers(this.clanTag);
   }
 
 }
