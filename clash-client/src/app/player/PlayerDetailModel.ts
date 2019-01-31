@@ -2,7 +2,7 @@ import { ClanBaseModel } from '../api/model/ClanBaseModel';
 import { LeagueStatisticsModel } from './LeagueStatisticsModel';
 import { AchievementsModel } from './AchievementsModel';
 import { CardsModel } from '../api/model/CardsModel';
-import { FavouriteCardModel } from './FavouriteCardModel';
+import { BasicCardModel } from '../api/model/BasicCardModel';
 import { ArenaModel } from '../api/model/ArenaModel';
 
 export class PlayerDetailModel {
@@ -31,5 +31,5 @@ export class PlayerDetailModel {
     achievements: AchievementsModel[];
     cards: CardsModel[];
     currentDeck: CardsModel[];
-    currentFavouriteCard: FavouriteCardModel;
+    currentFavouriteCard: BasicCardModel;
 }

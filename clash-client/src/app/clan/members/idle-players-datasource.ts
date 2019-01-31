@@ -145,18 +145,11 @@ export class IdlePlayersDataSource extends DataSource<ClanMemberModel> {
 
     this.loadingSubject.next(true);
 
-    /* FAKE DATA */
-    this.idlePlayersSubject.next(EXAMPLE_DATA);
-    this.loadingSubject.next(false);
-    /* FAKE DATA END */
-
-    /* U N C OM M E N T   T O   G E T   R E A L   D A T A */
-    /*this.memberService.getIdlePlayers(clanTag).pipe(
+    this.memberService.getIdlePlayers(clanTag).pipe(
       catchError(() => of(new IdleClanMemberResponse())),
       finalize(() => this.loadingSubject.next(false))
     )
       .subscribe((players: IdleClanMemberResponse) => this.idlePlayersSubject.next(players.idlePlayers));
-      */
   }
 
   /**

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { MemberCardsResponse } from './MemberCardsResponse';
 import { ClanMemberCardsQuery } from './ClanMemberCardsQuery';
 import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
+import { GameCardsResponse } from './GameCardsResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,13 @@ export class CardsService extends BaseService {
     return this.http.get<MemberCardsResponse>(this.baseUrl + this.url + clanTag, {params: params})
       .pipe(
         catchError(this.handleError('getMemberCards', undefined))
+      );
+  }
+
+  getAllCards(): Observable<GameCardsResponse> {
+    return this.http.get<GameCardsResponse>(this.baseUrl + '/cards')
+      .pipe(
+        catchError(this.handleError('getAllCards', undefined))
       );
   }
 }

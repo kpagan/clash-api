@@ -1,16 +1,15 @@
 package org.kpagan.clash.clashserver.api.common;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class CardsInfo {
+@EqualsAndHashCode(callSuper=true)
+public class CardsInfo extends BasicCardInfo {
 	public static final int MAX_CARD_LEVEL = 13;
 	
-	private String name;
 	private Integer level;
-	private Integer maxLevel;
 	private Integer count;
-	private IconUrlInfo iconUrls;
 	private Integer correctLevel;
 	private Integer maxCardLevel;
 	

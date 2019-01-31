@@ -5,6 +5,7 @@ import java.util.List;
 import org.kpagan.clash.clashserver.api.common.ArenaInfo;
 import org.kpagan.clash.clashserver.api.common.CardsInfo;
 import org.kpagan.clash.clashserver.api.common.ClanBaseInfo;
+import org.kpagan.clash.clashserver.api.common.BasicCardInfo;
 
 import lombok.Data;
 
@@ -35,5 +36,5 @@ public class PlayerDetailsInfo {
 	private List<AchievementsInfo> achievements;
 	private List<CardsInfo> cards;
 	private List<CardsInfo> currentDeck;
-	private FavouriteCardInfo currentFavouriteCard;
+	private BasicCardInfo currentFavouriteCard;
 }

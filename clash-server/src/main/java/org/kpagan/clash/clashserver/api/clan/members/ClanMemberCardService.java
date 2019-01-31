@@ -33,14 +33,11 @@ public class ClanMemberCardService {
 		for (ClanMemberInfo member : clanMembers.getItems()) {
 			double progress = ((double) ++current / totalMembers) * 100;
 			log.info("Looking for member {}. Progress: {}%", member.getName(), percentageFormatter.format(progress));
-
-			if (member.getDonations() == 0) {
-				PlayerDetailsInfo player = playerService.getPlayer(member.getTag());
-				Optional<CardsInfo> wantedCard = player.getCards().stream()
-						.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
-				if (wantedCard.isPresent()) {
-					eligiblePlayers.add(player);
-				}
+			PlayerDetailsInfo player = playerService.getPlayer(member.getTag());
+			Optional<CardsInfo> wantedCard = player.getCards().stream()
+					.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
+			if (wantedCard.isPresent()) {
+				eligiblePlayers.add(player);
 			}
 		}
 		return eligiblePlayers;

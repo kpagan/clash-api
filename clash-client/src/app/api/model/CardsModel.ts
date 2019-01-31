@@ -1,11 +1,9 @@
 import { IconUrlModel } from './IconUrlModel';
+import { BasicCardModel } from './BasicCardModel';
 
-export class CardsModel {
-    name: string;
+export class CardsModel extends BasicCardModel {
     level: number;
-    maxLevel: number;
     count: number;
-    iconUrls: IconUrlModel;
     correctLevel?: number;
     maxCardLevel?: number;
 }

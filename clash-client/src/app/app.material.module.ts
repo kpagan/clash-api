@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
   MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule,
-  MatProgressSpinnerModule, MatDividerModule, MatTooltipModule} from '@angular/material';
+  MatProgressSpinnerModule, MatDividerModule, MatTooltipModule, MatAutocompleteModule} from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
@@ -27,7 +27,8 @@ import {MatInputModule} from '@angular/material/input';
     MatInputModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatToolbarModule,
@@ -46,7 +47,8 @@ import {MatInputModule} from '@angular/material/input';
     MatInputModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatAutocompleteModule
   ]
 })
 export class AppMaterialModule { }

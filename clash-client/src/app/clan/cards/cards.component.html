@@ -3,41 +3,72 @@
     <mat-spinner></mat-spinner>
   </div>
 -->
-  <button mat-raised-button type="button" (click)="search()">Search</button>
-  <div class="clearfix"></div>
-  <div class="player-box mat-elevation-z8" *ngFor="let player of players">
-    <mat-card class="member-cards">
-      <mat-card-header>
-        <mat-card-title>{{ player.name }}</mat-card-title>
-        <mat-card-subtitle>{{ player.tag }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <h3 mat-line>Current deck</h3>
-        <mat-grid-list cols="4" rowHeight="1:1">
-          <mat-grid-tile *ngFor="let card of player.currentDeck">
-            <div class="card-container">
-              <img src="{{card.iconUrls.medium}}" class="card-image" matTooltip="{{card.name}}" />
-              <span class="card-level">{{card.correctLevel}}</span>
-              <small class="card-count">{{card.count}} / {{card.maxCardLevel}}</small>
-            </div>
-          </mat-grid-tile>
-        </mat-grid-list>
-        <mat-divider></mat-divider>
-        <h3 mat-line>Current favourite card</h3>
-        <mat-grid-list cols="4" rowHeight="120px">
-          <mat-grid-tile>
-            <div class="card-container">
-              <img src="{{player.currentFavouriteCard.iconUrls.medium}}" class="card-image" />
-              <small class="card-count">{{player.currentFavouriteCard.name}}</small>
-            </div>
-          </mat-grid-tile>
-        </mat-grid-list>
-        <div class="clearfix"></div>
-      </mat-card-content>
-      <!-- <mat-card-actions>
+  <form>
+    <mat-form-field>
+      <input type="text" placeholder="Select a card" aria-label="Card name" matInput [formControl]="cardNameControl"
+        [matAutocomplete]="auto" [errorStateMatcher]="matcher" [(ngModel)]="selectedCard">
+      <button mat-button *ngIf="selectedCard" matSuffix mat-icon-button aria-label="Clear" (click)="selectedCard=''">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let card of filteredCards | async" [value]="card.name">
+          {{card.name}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="cardNameControl.hasError('required')">
+        Card is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Number of cards" [formControl]="cardNumberControl" [errorStateMatcher]="matcher"
+        [(ngModel)]="numberOfCards">
+      <button mat-button *ngIf="numberOfCards" matSuffix mat-icon-button aria-label="Clear" (click)="numberOfCards=''">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="cardNumberControl.hasError('pattern') && !cardNumberControl.hasError('required')">
+        Please enter a valid number
+      </mat-error>
+      <mat-error *ngIf="cardNumberControl.hasError('required')">
+        Number is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button type="button" (click)="search()">Search</button>
+    <div class="clearfix"></div>
+    <div class="player-box mat-elevation-z8" *ngFor="let player of players">
+      <mat-card class="member-cards">
+        <mat-card-header>
+          <mat-card-title>{{ player.name }}</mat-card-title>
+          <mat-card-subtitle>{{ player.tag }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <h3 mat-line>Current deck</h3>
+          <mat-grid-list cols="4" rowHeight="1:1">
+            <mat-grid-tile *ngFor="let card of player.currentDeck">
+              <div class="card-container">
+                <img src="{{card.iconUrls.medium}}" class="card-image" matTooltip="{{card.name}}" />
+                <span class="card-level">{{card.correctLevel}}</span>
+                <small class="card-count">{{card.count}} / {{card.maxCardLevel}}</small>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <mat-divider></mat-divider>
+          <h3 mat-line>Current favourite card</h3>
+          <mat-grid-list cols="4" rowHeight="120px">
+            <mat-grid-tile>
+              <div class="card-container">
+                <img src="{{player.currentFavouriteCard.iconUrls.medium}}" class="card-image" />
+                <small class="card-count">{{player.currentFavouriteCard.name}}</small>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <div class="clearfix"></div>
+        </mat-card-content>
+        <!-- <mat-card-actions>
       <button mat-button>LIKE</button>
       <button mat-button>SHARE</button>
     </mat-card-actions> -->
-    </mat-card>
-  </div>
+      </mat-card>
+    </div>
+  </form>
 </div>

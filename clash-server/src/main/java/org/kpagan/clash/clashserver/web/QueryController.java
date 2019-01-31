@@ -25,7 +25,7 @@ public class QueryController {
 	@Autowired
 	private Map<String, QueryHandler> queryHandlers;
 
-	@RequestMapping(value = { "/{queryId}/{query}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/{queryId}/{query}", "/{queryId}" }, method = RequestMethod.GET)
 	public ResponseEntity<QueryResponse> handleQuery(@PathVariable("queryId") String queryId,
 			@PathVariable("query") Optional<String> query, @RequestParam Map<String, String> params) {
 		QueryResponse QueryResponse = queryHandlers.get(queryId).handle(query, params);
