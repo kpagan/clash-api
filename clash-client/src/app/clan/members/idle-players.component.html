@@ -1,17 +1,21 @@
-<div class="mat-elevation-z8">
+<div id="idle-players">
+  <h1>Find players of a clan that are idle</h1>
+  <div class="sub-heading">Idle players are considered the players of a clan that have <b>zero</b> donations and
+    haven't done a battle for two or more months.</div>
   <form>
-      <mat-form-field>
-        <input matInput placeholder="Clan tag" [formControl]="clanTagControl" [errorStateMatcher]="matcher"
-          [(ngModel)]="clanTag">
-        <button mat-button *ngIf="clanTag" matSuffix mat-icon-button aria-label="Clear" (click)="clanTag=''">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-error *ngIf="clanTagControl.hasError('required')">
-          Clan tag is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-      <button mat-raised-button type="button" (click)="search()">Search</button>
-      <div class="clearfix"></div>
+    <mat-form-field>
+      <input matInput placeholder="Clan tag" [formControl]="clanTagControl" [errorStateMatcher]="matcher" [(ngModel)]="clanTag">
+      <button mat-button *ngIf="clanTag" matSuffix mat-icon-button aria-label="Clear" (click)="clanTag=''">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="clanTagControl.hasError('required')">
+        Clan tag is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <button mat-mini-fab color="primary" type="button" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
+    <div class="clearfix"></div>
   </form>
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">
     <mat-spinner></mat-spinner>

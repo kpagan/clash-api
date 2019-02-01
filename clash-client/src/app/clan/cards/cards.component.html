@@ -3,6 +3,9 @@
     <mat-spinner></mat-spinner>
   </div>
 -->
+  <h1>Find which players of the clan have a card that you are interested in</h1>
+  <div class="sub-heading">When trading cards you would like to know which clan player has the card you want, what is his current deck and his favourite card in order to make a good proposal.</div>
+
   <form>
     <mat-form-field>
       <input matInput placeholder="Clan tag" [formControl]="clanTagControl" [errorStateMatcher]="matcher"
@@ -42,8 +45,9 @@
         Number is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-
-    <button mat-raised-button type="button" (click)="search()">Search</button>
+    <button mat-mini-fab color="primary" type="button" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
     <div class="clearfix"></div>
     <div class="player-box mat-elevation-z8" *ngFor="let player of players">
       <mat-card class="member-cards">
@@ -80,5 +84,6 @@
     </mat-card-actions> -->
       </mat-card>
     </div>
+    <div class="clearfix"></div>
   </form>
 </div>

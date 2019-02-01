@@ -13,12 +13,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { TestTableComponent } from './test-table/test-table.component';
 import { AppMaterialModule } from './app.material.module';
+import { ClashNavigationComponent } from './clash-navigation/clash-navigation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MessageComponent,
-    TestTableComponent
+    TestTableComponent,
+    ClashNavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { AppMaterialModule } from './app.material.module';
     HttpClientModule,
     AppMaterialModule,
     PlayerModule,
-    ClanModule
+    ClanModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
