@@ -45,7 +45,7 @@ export class IdlePlayersComponent extends ClanBaseComponent implements OnInit {
 
   search() {
     super.search();
-    this.dataSource.loadIdlePlayers(this.clanTag);
+    this.dataSource.loadIdlePlayers(this.clanTagControl.value);
   }
 
 }

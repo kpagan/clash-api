@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
   MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule,
-  MatProgressSpinnerModule, MatDividerModule, MatTooltipModule, MatAutocompleteModule} from '@angular/material';
+  MatProgressSpinnerModule, MatDividerModule, MatTooltipModule, MatAutocompleteModule, MatProgressBarModule} from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
@@ -26,6 +26,7 @@ import {MatInputModule} from '@angular/material/input';
     MatSelectModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatDividerModule,
     MatTooltipModule,
     MatAutocompleteModule
@@ -46,6 +47,7 @@ import {MatInputModule} from '@angular/material/input';
     MatSelectModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatDividerModule,
     MatTooltipModule,
     MatAutocompleteModule

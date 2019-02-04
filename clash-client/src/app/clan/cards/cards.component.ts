@@ -53,7 +53,9 @@ export class CardsComponent extends ClanBaseComponent implements OnInit {
 
   search() {
     super.search();
-    this.cardsService.getMemberCards(this.clanTag, this.query).subscribe((response: MemberCardsResponse) => {
+    this.query.card = this.cardNameControl.value;
+    this.query.no = this.cardNumberControl.value;
+    this.cardsService.getMemberCards(this.clanTagControl.value, this.query).subscribe((response: MemberCardsResponse) => {
       this.players = response.players;
     });
   }

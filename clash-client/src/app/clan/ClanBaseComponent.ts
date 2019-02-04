@@ -14,17 +14,16 @@ export class ClanBaseComponent implements OnInit {
 
     clanTagControl = new FormControl('', [Validators.required]);
     matcher = new MyErrorStateMatcher();
-    clanTag: string;
     constructor(protected cookieService: CookieService) {}
 
     ngOnInit(): void {
         const clanTag = this.cookieService.get('clanTag');
         if (clanTag !== undefined) {
-          this.clanTag = clanTag;
+          this.clanTagControl.setValue(clanTag);
         }
     }
 
     search() {
-        this.cookieService.set('clanTag', this.clanTag);
+        this.cookieService.set('clanTag', this.clanTagControl.value);
     }
 }

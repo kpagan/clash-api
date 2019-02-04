@@ -8,8 +8,7 @@
 
   <form>
     <mat-form-field>
-      <input matInput placeholder="Clan tag" [formControl]="clanTagControl" [errorStateMatcher]="matcher"
-        [(ngModel)]="clanTag">
+      <input matInput placeholder="Clan tag" [formControl]="clanTagControl" [errorStateMatcher]="matcher">
       <button mat-button *ngIf="clanTag" matSuffix mat-icon-button aria-label="Clear" (click)="clanTag=''">
         <mat-icon>close</mat-icon>
       </button>
@@ -19,7 +18,7 @@
     </mat-form-field>
     <mat-form-field>
       <input type="text" placeholder="Select a card" aria-label="Card name" matInput [formControl]="cardNameControl"
-        [matAutocomplete]="auto" [errorStateMatcher]="matcher" [(ngModel)]="query.card">
+        [matAutocomplete]="auto" [errorStateMatcher]="matcher">
       <button mat-button *ngIf="query.card" matSuffix mat-icon-button aria-label="Clear" (click)="query.card=''">
         <mat-icon>close</mat-icon>
       </button>
@@ -33,8 +32,7 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Number of cards" [formControl]="cardNumberControl" [errorStateMatcher]="matcher"
-        [(ngModel)]="query.no">
+      <input matInput placeholder="Number of cards" [formControl]="cardNumberControl" [errorStateMatcher]="matcher">
       <button mat-button *ngIf="query.no" matSuffix mat-icon-button aria-label="Clear" (click)="query.no=''">
         <mat-icon>close</mat-icon>
       </button>

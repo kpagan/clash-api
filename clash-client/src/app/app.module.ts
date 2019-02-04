@@ -14,6 +14,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { TestTableComponent } from './test-table/test-table.component';
 import { AppMaterialModule } from './app.material.module';
 import { ClashNavigationComponent } from './clash-navigation/clash-navigation.component';
+import { ClashProgressBarModule } from './clash-progress-bar/clash-progress-bar.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ClashNavigationComponent } from './clash-navigation/clash-navigation.co
     AppMaterialModule,
     PlayerModule,
     ClanModule,
+    ClashProgressBarModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
