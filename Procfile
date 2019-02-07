@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar clash-server/target/clash-server.jar --p $PORT
