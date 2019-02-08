@@ -1,1 +1,0 @@
-java -Dhttps.proxyHost=webproxynrb.nrb.be -Dhttps.proxyPort=8080 -Dhttps.proxyUser=P35088 -Dhttps.proxyPassword=nopass03# -jar clash-server/target/clash-server.jar
