@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dhttps.proxyHost=velodrome.usefixie.com -Dhttps.proxyPort=80 -Dhttps.proxyUser=fixie -Dhttps.proxyPassword=v3noCPQy2XMxQdZ -Dhttp.proxyHost=velodrome.usefixie.com -Dhttp.proxyPort=80 -Dhttp.proxyUser=fixie -Dhttp.proxyPassword=v3noCPQy2XMxQdZ -Dserver.port=$PORT -jar clash-server/target/clash-server.jar --p $PORT
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar clash-server/target/clash-server.jar --p $PORT
