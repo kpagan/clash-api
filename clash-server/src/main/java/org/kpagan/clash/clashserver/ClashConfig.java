@@ -1,5 +1,8 @@
 package org.kpagan.clash.clashserver;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -21,6 +24,9 @@ public class ClashConfig {
 	@Value("${FIXIE_URL:#{null}}")
 	private String fixieUrl;
 	
+	@Value(value = "${clash.api.threads}")
+	protected Integer threadsNo;
+
 	@Bean
 	public RestTemplate createRestTemplate() throws Exception {
 		if (fixieUrl != null) {
@@ -49,5 +55,10 @@ public class ClashConfig {
 			return new RestTemplate();
 		}
     }
+	
+	@Bean
+	ExecutorService threadPoolExecutor() {
+		return Executors.newFixedThreadPool(threadsNo);
+	}
 	
 }
