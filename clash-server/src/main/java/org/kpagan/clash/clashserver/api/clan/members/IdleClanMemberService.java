@@ -1,9 +1,10 @@
 package org.kpagan.clash.clashserver.api.clan.members;
 
 import java.text.DecimalFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import java.util.concurrent.Future;
 import org.kpagan.clash.clashserver.api.common.PlayerWrapperInfo;
 import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogInfo;
 import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogService;
+import org.kpagan.clash.clashserver.api.player.battlelog.ClanMemberBattleLogInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -42,8 +45,8 @@ public class IdleClanMemberService {
 	 * @param clanTag
 	 * @return
 	 */
-	public List<ClanMemberInfo> getIdlePlayers(String clanTag) {
-		List<ClanMemberInfo> idlePlayers = new ArrayList<>();
+	public List<ClanMemberBattleLogInfo> getIdlePlayers(String clanTag) {
+		List<ClanMemberBattleLogInfo> idlePlayers = new ArrayList<>();
 		ClanMemberListInfo clanMembers = clanMemberListService.getClanMembers(clanTag);
 		List<Future<PlayerWrapperInfo<BattleLogInfo>>> futures = new ArrayList<>();
 		Map<String, ClanMemberInfo> members = new HashMap<>();
@@ -71,21 +74,27 @@ public class IdleClanMemberService {
 			try {
 				PlayerWrapperInfo<BattleLogInfo> playerInfo = future.get();
 				log.info("Got response for member {}. Progress: {}%", playerInfo.getName(), percentageFormatter.format(progress));
+				ClanMemberInfo member = members.get(playerInfo.getTag());
+				LocalDateTime battleDate = null;
 				if (playerInfo.getModel() != null) {
 					// the 1st battleLog entry will be the most recent
 					BattleLogInfo battleLogInfo = playerInfo.getModel();
-					LocalDate battleDate = LocalDate.parse(battleLogInfo.getBattleTime(), dateFormatter);
-					// if no battle has been done for the past 2 months then consider the player as idle
-					if (battleDate.isBefore(LocalDate.now().minusMonths(2L))) {
-						idlePlayers.add(members.get(playerInfo.getTag()));
-					}
-				} else {
-					idlePlayers.add(members.get(playerInfo.getTag())); // idle players for so long will have empty battle log
+					battleDate = LocalDateTime.parse(battleLogInfo.getBattleTime(), dateFormatter);
 				}
+				idlePlayers.add(map(member, battleDate)); // idle players for so long will have empty battle log
 			} catch (Exception e) {
 				log.error("Error while getting battle log info for player");
 			}	
 		}
+		Collections.sort(idlePlayers);
 		return idlePlayers;
+	}
+	
+	private ClanMemberBattleLogInfo map(ClanMemberInfo member, LocalDateTime lastBattle) {
+		ClanMemberBattleLogInfo info = new ClanMemberBattleLogInfo();
+		BeanUtils.copyProperties(member, info);
+		info.setLastBattle(lastBattle);
+		return info;
+		
 	}
 }
