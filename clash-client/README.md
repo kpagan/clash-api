@@ -2,9 +2,17 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.3.
 
+## Launching the UI
+
+Run `npm start` and the UI will be compiled and launched in the default browser.
+
+## Creating the Markdown
+
+This markdown was edited using online service http://euangoddard.github.io/clipboard2markdown/
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4400/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 

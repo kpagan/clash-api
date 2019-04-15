@@ -83,7 +83,7 @@ public class IdleClanMemberService {
 				}
 				idlePlayers.add(map(member, battleDate)); // idle players for so long will have empty battle log
 			} catch (Exception e) {
-				log.error("Error while getting battle log info for player");
+				log.error("Error while getting battle log info for player", e);
 			}	
 		}
 		Collections.sort(idlePlayers);

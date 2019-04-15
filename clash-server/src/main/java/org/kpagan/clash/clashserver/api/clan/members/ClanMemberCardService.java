@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import org.kpagan.clash.clashserver.api.common.CardsInfo;
 import org.kpagan.clash.clashserver.api.player.PlayerDetailsInfo;
@@ -25,20 +27,39 @@ public class ClanMemberCardService {
 	@Autowired
 	private PlayerService playerService;
 
+	@Autowired
+	private ExecutorService executor;
+
 	public List<PlayerDetailsInfo> getMemberPlayersCards(String clanTag, String requestedCard, Integer count) {
 		List<PlayerDetailsInfo> eligiblePlayers = new ArrayList<>();
 		ClanMemberListInfo clanMembers = clanMemberListService.getClanMembers(clanTag);
-		int totalMembers = clanMembers.getItems().size();
-		int current = 0;
+		List<Future<PlayerDetailsInfo>> futures = new ArrayList<>();
+		
 		for (ClanMemberInfo member : clanMembers.getItems()) {
+			Future<PlayerDetailsInfo> future = executor.submit(() -> {
+				log.info("Looking for member {}", member.getName());
+				return playerService.getPlayer(member.getTag());
+			});
+			futures.add(future);
+		}
+
+		int totalMembers = futures.size();
+		int current = 0;
+		
+		for (Future<PlayerDetailsInfo> future : futures) {
 			double progress = ((double) ++current / totalMembers) * 100;
-			log.info("Looking for member {}. Progress: {}%", member.getName(), percentageFormatter.format(progress));
-			PlayerDetailsInfo player = playerService.getPlayer(member.getTag());
-			Optional<CardsInfo> wantedCard = player.getCards().stream()
-					.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
-			if (wantedCard.isPresent()) {
-				eligiblePlayers.add(player);
+			try {
+				PlayerDetailsInfo player = future.get();
+				log.info("Got response for member {}. Progress: {}%", player.getName(), percentageFormatter.format(progress));
+				Optional<CardsInfo> wantedCard = player.getCards().stream()
+						.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
+				if (wantedCard.isPresent()) {
+					eligiblePlayers.add(player);
+				}
+			} catch (Exception e) {
+				log.error("Error while getting details info for player", e);
 			}
+			
 		}
 		return eligiblePlayers;
 	}

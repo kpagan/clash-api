@@ -55,7 +55,7 @@
         </mat-card-header>
         <mat-card-content>
           <h3 mat-line>Current deck</h3>
-          <mat-grid-list cols="4" rowHeight="1:1">
+          <mat-grid-list cols="4" rowHeight="120px" gutterSize="4px">
             <mat-grid-tile *ngFor="let card of player.currentDeck">
               <div class="card-container">
                 <img src="{{card.iconUrls.medium}}" class="card-image" matTooltip="{{card.name}}" />
