@@ -1,5 +1,6 @@
-package org.kpagan.clash.clashserver;
+package org.kpagan.clash.clashserver.config;
 
+import java.time.ZoneId;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,7 +26,10 @@ public class ClashConfig {
 	private String fixieUrl;
 	
 	@Value(value = "${clash.api.threads}")
-	protected Integer threadsNo;
+	private Integer threadsNo;
+	
+	public static final String TIMEZONE_ID = "Europe/Athens";
+	public static final ZoneId ATHENS = ZoneId.of(TIMEZONE_ID);
 
 	@Bean
 	public RestTemplate createRestTemplate() throws Exception {

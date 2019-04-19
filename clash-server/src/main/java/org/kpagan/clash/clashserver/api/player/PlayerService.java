@@ -15,7 +15,7 @@ public class PlayerService extends BaseService<PlayerDetailsInfo> {
 
 	@Cacheable(value = "player_details", key = "#playerTag")
 	public PlayerDetailsInfo getPlayer(String playerTag) {
-		String tag = playerTag.replaceAll("#", "");
+		String tag = playerTag.trim().replaceAll("#", "");
 		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("players", "#".concat(tag)).build();
 		return getInfo(u.toUri());
 	}

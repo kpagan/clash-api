@@ -1,6 +1,7 @@
 package org.kpagan.clash.clashserver.api;
 
 import java.net.URI;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.client.RestTemplate;
  * @param <T> the type of the response DTO
  */
 public abstract class BaseService<T> {
+	
+	public static final DecimalFormat percentageFormatter = new DecimalFormat("#");
 	
 	private final Class<T> infoClass;
 	

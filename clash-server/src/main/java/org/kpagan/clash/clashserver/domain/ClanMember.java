@@ -43,6 +43,15 @@ public class ClanMember {
 	@Column(name = "received_from_join")
 	private Integer receivedFromJoinDay;
 
+	@Column(name = "average_week_donations")
+	private Integer averageWeeklyDonations;
+	
+	@Column(name = "last_day_donations")
+	private Integer lastDayDonations;
+	
+	@Column(name = "last_day_donations_rcv")
+	private Integer lastDayDonationsReceived;
+	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

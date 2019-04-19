@@ -1,15 +1,13 @@
 package org.kpagan.clash.clashserver.api.clan.members;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.kpagan.clash.clashserver.api.BaseService;
 import org.kpagan.clash.clashserver.api.common.CardsInfo;
 import org.kpagan.clash.clashserver.api.player.PlayerDetailsInfo;
-import org.kpagan.clash.clashserver.api.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,29 +17,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ClanMemberCardService {
 
-	private static final DecimalFormat percentageFormatter = new DecimalFormat("#");
-
 	@Autowired
 	private ClanMemberListService clanMemberListService;
 
-	@Autowired
-	private PlayerService playerService;
-
-	@Autowired
-	private ExecutorService executor;
-
 	public List<PlayerDetailsInfo> getMemberPlayersCards(String clanTag, String requestedCard, Integer count) {
 		List<PlayerDetailsInfo> eligiblePlayers = new ArrayList<>();
-		ClanMemberListInfo clanMembers = clanMemberListService.getClanMembers(clanTag);
-		List<Future<PlayerDetailsInfo>> futures = new ArrayList<>();
-		
-		for (ClanMemberInfo member : clanMembers.getItems()) {
-			Future<PlayerDetailsInfo> future = executor.submit(() -> {
-				log.info("Looking for member {}", member.getName());
-				return playerService.getPlayer(member.getTag());
-			});
-			futures.add(future);
-		}
+		List<Future<PlayerDetailsInfo>> futures = clanMemberListService.getClanMembersAsync(clanTag);
 
 		int totalMembers = futures.size();
 		int current = 0;
@@ -50,7 +31,7 @@ public class ClanMemberCardService {
 			double progress = ((double) ++current / totalMembers) * 100;
 			try {
 				PlayerDetailsInfo player = future.get();
-				log.info("Got response for member {}. Progress: {}%", player.getName(), percentageFormatter.format(progress));
+				log.info("Got response for member {}. Progress: {}%", player.getName(), BaseService.percentageFormatter.format(progress));
 				Optional<CardsInfo> wantedCard = player.getCards().stream()
 						.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
 				if (wantedCard.isPresent()) {

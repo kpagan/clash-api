@@ -1,6 +1,5 @@
 package org.kpagan.clash.clashserver.api.clan.members;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.kpagan.clash.clashserver.api.BaseService;
 import org.kpagan.clash.clashserver.api.common.PlayerWrapperInfo;
 import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogInfo;
 import org.kpagan.clash.clashserver.api.player.battlelog.BattleLogService;
@@ -27,7 +27,6 @@ import lombok.extern.log4j.Log4j2;
 public class IdleClanMemberService {
 
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'.'SSS'Z'");
-	private static final DecimalFormat percentageFormatter = new DecimalFormat("#");
 
 	@Autowired
 	private ClanMemberListService clanMemberListService;
@@ -73,7 +72,7 @@ public class IdleClanMemberService {
 			double progress = ((double) ++current / totalMembers) * 100;
 			try {
 				PlayerWrapperInfo<BattleLogInfo> playerInfo = future.get();
-				log.info("Got response for member {}. Progress: {}%", playerInfo.getName(), percentageFormatter.format(progress));
+				log.info("Got response for member {}. Progress: {}%", playerInfo.getName(), BaseService.percentageFormatter.format(progress));
 				ClanMemberInfo member = members.get(playerInfo.getTag());
 				LocalDateTime battleDate = null;
 				if (playerInfo.getModel() != null) {

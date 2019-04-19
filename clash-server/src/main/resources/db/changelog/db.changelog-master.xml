@@ -15,6 +15,9 @@
 			<column name="left_clan" type="DATE" />
 			<column name="donated_from_join" type="BIGINT" />
 			<column name="received_from_join" type="BIGINT" />
+			<column name="average_week_donations" type="BIGINT" />
+			<column name="last_day_donations" type="BIGINT" />
+			<column name="last_day_donations_rcv" type="BIGINT" />
 		</createTable>
 	</changeSet>
 

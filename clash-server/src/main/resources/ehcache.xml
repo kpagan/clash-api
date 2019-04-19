@@ -4,11 +4,17 @@
 	<diskStore path="java.io.tmpdir" />
 	<cache name="player_details" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
 		<persistence strategy="none" />
+		<cacheEventListenerFactory listenFor="local"
+               class="org.kpagan.clash.clashserver.config.ExpirationDateCacheEventListenerFactory"/>
 	</cache>
 	<cache name="player_battlelog" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
 		<persistence strategy="none" />
+		<cacheEventListenerFactory listenFor="local"
+               class="org.kpagan.clash.clashserver.config.ExpirationDateCacheEventListenerFactory"/>
 	</cache>
 	<cache name="cards" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
 		<persistence strategy="none" />
+		<cacheEventListenerFactory listenFor="local"
+               class="org.kpagan.clash.clashserver.config.ExpirationDateCacheEventListenerFactory"/>
 	</cache>
 </ehcache>
