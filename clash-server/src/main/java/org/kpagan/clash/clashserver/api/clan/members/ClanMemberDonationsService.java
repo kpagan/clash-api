@@ -65,13 +65,13 @@ public class ClanMemberDonationsService {
 				// player left before and rejoined, reset donations
 				populate(player, clanMember);
 			} else {
-				if (player.getDonations() < clanMember.getLastDayDonations()) {
+				if (player.getDonations() < clanMember.getWeekDonationsSoFar()) {
 					// update player donations from join day etc only after the change of the week
 					calculateDonations(clanMember);
 				} else {
 					// update last day donations only
-					clanMember.setLastDayDonations(player.getDonations());
-					clanMember.setLastDayDonationsReceived(player.getDonationsReceived());
+					clanMember.setWeekDonationsSoFar(player.getDonations());
+					clanMember.setWeekDonationsReceivedSoFar(player.getDonationsReceived());
 				}
 			}
 			return clanMember;
@@ -80,25 +80,34 @@ public class ClanMemberDonationsService {
 			ClanMember member = new ClanMember();
 			member.setTag(player.getTag());
 			member.setName(player.getName());
+			member.setClanTag(player.getClan().getTag());
 			populate(player, member);
 			return member;
 		}
 	}
 
 	private void calculateDonations(ClanMember clanMember) {
-		clanMember.setDonatedFromJoinDay(clanMember.getDonatedFromJoinDay() + clanMember.getLastDayDonations());
-		clanMember.setReceivedFromJoinDay(clanMember.getReceivedFromJoinDay() + clanMember.getLastDayDonationsReceived());
-		// update average donations by summing previous average with current donations and divide by two
-		clanMember.setAverageWeeklyDonations((int) Math.round(((double) (clanMember.getAverageWeeklyDonations() + clanMember.getLastDayDonations())) / 2));
+		clanMember.setDonatedFromJoinDay(clanMember.getDonatedFromJoinDay() + clanMember.getWeekDonationsSoFar());
+		clanMember.setReceivedFromJoinDay(clanMember.getReceivedFromJoinDay() + clanMember.getWeekDonationsReceivedSoFar());
+		int avg = clanMember.getAverageWeeklyDonations();
+		if (avg == 0) {
+			// for the 1st time just get the donations so far
+			avg = clanMember.getWeekDonationsSoFar();
+		} else {
+			// update average donations by summing previous average with current donations and divide by two
+			avg = (int) Math.round(((double) (clanMember.getAverageWeeklyDonations() + clanMember.getWeekDonationsSoFar())) / 2);
+		}
+		clanMember.setAverageWeeklyDonations(avg);
 	}
 
 	private void populate(PlayerDetailsInfo player, ClanMember member) {
 		member.setMemberSince(LocalDate.now(ClashConfig.ATHENS));
-		member.setDonatedFromJoinDay(player.getDonations());
-		member.setAverageWeeklyDonations(player.getDonations());
-		member.setLastDayDonations(player.getDonations());
-		member.setReceivedFromJoinDay(player.getDonationsReceived());
-		member.setLastDayDonationsReceived(player.getDonationsReceived());
+		// initialize donations to zero since the statistics are calculated when the week changes
+		member.setDonatedFromJoinDay(0);
+		member.setAverageWeeklyDonations(0);
+		member.setReceivedFromJoinDay(0);
+		member.setWeekDonationsSoFar(player.getDonations());
+		member.setWeekDonationsReceivedSoFar(player.getDonationsReceived());
 		member.setLeftClan(null);
 	}
 }

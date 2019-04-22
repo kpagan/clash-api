@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
 import org.kpagan.clash.clashserver.api.BaseService;
 import org.kpagan.clash.clashserver.api.player.PlayerDetailsInfo;
 import org.kpagan.clash.clashserver.api.player.PlayerService;
+import org.kpagan.clash.clashserver.util.ClashUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
@@ -30,8 +31,7 @@ public class ClanMemberListService extends BaseService<ClanMemberListInfo> {
 	}
 
 	public ClanMemberListInfo getClanMembers(String clanTag) {
-		String tag = clanTag.trim().replaceAll("#", "");
-		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("clans", "#".concat(tag), "members").build();
+		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("clans", ClashUtils.getTag(clanTag), "members").build();
 		return getInfo(u.toUri());
 	}
 	

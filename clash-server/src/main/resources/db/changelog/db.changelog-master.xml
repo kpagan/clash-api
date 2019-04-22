@@ -11,14 +11,20 @@
 			<column name="name" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
+			<column name="clan_tag" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
 			<column name="member_since" type="DATE" />
 			<column name="left_clan" type="DATE" />
 			<column name="donated_from_join" type="BIGINT" />
 			<column name="received_from_join" type="BIGINT" />
 			<column name="average_week_donations" type="BIGINT" />
-			<column name="last_day_donations" type="BIGINT" />
-			<column name="last_day_donations_rcv" type="BIGINT" />
+			<column name="week_donations_so_far" type="BIGINT" />
+			<column name="week_donations_rcv_so_far" type="BIGINT" />
 		</createTable>
+		<createIndex indexName="member_clan_idx" tableName="clan_member" >
+			<column name="clan_tag" type="varchar(255)" />
+		</createIndex>
 	</changeSet>
 
 </databaseChangeLog>

@@ -3,6 +3,7 @@ package org.kpagan.clash.clashserver.api.player.battlelog;
 import java.util.List;
 
 import org.kpagan.clash.clashserver.api.BaseService;
+import org.kpagan.clash.clashserver.util.ClashUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,7 @@ public class BattleLogService extends BaseService<BattleLogInfo> {
 
 	@Cacheable(value = "player_battlelog", key = "#playerTag")
 	public List<BattleLogInfo> getBattleLog(String playerTag) {
-		String tag = playerTag.replaceAll("#", "");
-		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl)
-				.pathSegment("players", "#".concat(tag), "battlelog").build();
+		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("players", ClashUtils.getTag(playerTag), "battlelog").build();
 		return getInfoList(u.toUri());
 	}
 

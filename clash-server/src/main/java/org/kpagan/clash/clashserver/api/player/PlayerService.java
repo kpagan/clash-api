@@ -1,6 +1,7 @@
 package org.kpagan.clash.clashserver.api.player;
 
 import org.kpagan.clash.clashserver.api.BaseService;
+import org.kpagan.clash.clashserver.util.ClashUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
@@ -15,8 +16,7 @@ public class PlayerService extends BaseService<PlayerDetailsInfo> {
 
 	@Cacheable(value = "player_details", key = "#playerTag")
 	public PlayerDetailsInfo getPlayer(String playerTag) {
-		String tag = playerTag.trim().replaceAll("#", "");
-		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("players", "#".concat(tag)).build();
+		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("players", ClashUtils.getTag(playerTag)).build();
 		return getInfo(u.toUri());
 	}
 

@@ -14,5 +14,7 @@ public interface ClanMemberRepository extends JpaRepository<ClanMember, String> 
 
 	@Query("SELECT m FROM ClanMember m WHERE m.tag NOT IN (:tags)")
 	List<ClanMember> findClanMembersNotIn(@Param("tags") List<String> tags);
+	
+	List<ClanMember> findByClanTag(String tag);
 
 }

@@ -30,6 +30,9 @@ public class ClanMember {
 	private String tag;
 
 	private String name;
+	
+	@Column(name = "clan_tag")
+	private String clanTag;
 
 	@Column(name = "member_since")
 	private LocalDate memberSince;
@@ -46,11 +49,11 @@ public class ClanMember {
 	@Column(name = "average_week_donations")
 	private Integer averageWeeklyDonations;
 	
-	@Column(name = "last_day_donations")
-	private Integer lastDayDonations;
+	@Column(name = "week_donations_so_far")
+	private Integer weekDonationsSoFar;
 	
-	@Column(name = "last_day_donations_rcv")
-	private Integer lastDayDonationsReceived;
+	@Column(name = "week_donations_rcv_so_far")
+	private Integer weekDonationsReceivedSoFar;
 	
 	@Override
     public boolean equals(Object o) {

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.kpagan.clash.clashserver.api.clan.members.ClanMemberDonationsService;
 import org.kpagan.clash.clashserver.domain.ClanMember;
 import org.kpagan.clash.clashserver.domain.ClanMemberRepository;
+import org.kpagan.clash.clashserver.util.ClashUtils;
 import org.kpagan.clash.clashserver.web.QueryHandler;
 import org.kpagan.clash.clashserver.web.QueryResponse;
 import org.springframework.beans.BeanUtils;
@@ -31,7 +32,7 @@ public class ClanMemberDonationsHandler implements QueryHandler {
 		
 		if (query.isPresent()) {
 			donationService.getClanMemberDetails(query.get());
-			List<ClanMember> members = repo.findAll();
+			List<ClanMember> members = repo.findByClanTag(ClashUtils.getTag(query.get()));
 			response.setMembers(detach(members));
 		}
 		return response;
