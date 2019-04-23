@@ -55,6 +55,12 @@ public class ClanMember {
 	@Column(name = "week_donations_rcv_so_far")
 	private Integer weekDonationsReceivedSoFar;
 	
+	@Column(name = "rejoined_times")
+	private Integer timesRejoined;
+	
+	@Column(name = "remarks")
+	private String remarks;
+	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,4 +74,10 @@ public class ClanMember {
         return Objects.hash(getTag());
     }
 	
+    public void increaseTimesRejoined() {
+    	if (timesRejoined == null) {
+    		timesRejoined = 0;
+    	}
+    	++timesRejoined;
+    }
 }

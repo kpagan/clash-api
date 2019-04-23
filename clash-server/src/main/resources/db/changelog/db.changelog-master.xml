@@ -26,5 +26,12 @@
 			<column name="clan_tag" type="varchar(255)" />
 		</createIndex>
 	</changeSet>
+	
+	<changeSet id="add_remarks_times_rejoined_column" author="paganelis">
+		<addColumn tableName="clan_member">
+			<column name="rejoined_times" type="BIGINT" />
+			<column name="remarks" type="varchar(4000)" />
+		</addColumn>
+	</changeSet>
 
 </databaseChangeLog>

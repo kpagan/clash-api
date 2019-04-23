@@ -62,8 +62,9 @@ public class ClanMemberDonationsService {
 		if (dbPlayer.isPresent()) {
 			ClanMember clanMember = dbPlayer.get();
 			if (clanMember.getLeftClan() != null) {
-				// player left before and rejoined, reset donations
-				populate(player, clanMember);
+				// player left before and rejoined, increase how many times has re-joined and reset the date that left the clan
+				clanMember.increaseTimesRejoined();
+				clanMember.setLeftClan(null);
 			} else {
 				if (player.getDonations() < clanMember.getWeekDonationsSoFar()) {
 					// update player donations from join day etc only after the change of the week
@@ -81,7 +82,7 @@ public class ClanMemberDonationsService {
 			member.setTag(player.getTag());
 			member.setName(player.getName());
 			member.setClanTag(player.getClan().getTag());
-			populate(player, member);
+			initPlayer(player, member);
 			return member;
 		}
 	}
@@ -100,7 +101,7 @@ public class ClanMemberDonationsService {
 		clanMember.setAverageWeeklyDonations(avg);
 	}
 
-	private void populate(PlayerDetailsInfo player, ClanMember member) {
+	private void initPlayer(PlayerDetailsInfo player, ClanMember member) {
 		member.setMemberSince(LocalDate.now(ClashConfig.ATHENS));
 		// initialize donations to zero since the statistics are calculated when the week changes
 		member.setDonatedFromJoinDay(0);

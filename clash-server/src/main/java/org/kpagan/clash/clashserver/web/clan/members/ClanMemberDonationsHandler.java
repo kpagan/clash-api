@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.kpagan.clash.clashserver.api.clan.members.ClanMemberDonationsService;
 import org.kpagan.clash.clashserver.domain.ClanMember;
 import org.kpagan.clash.clashserver.domain.ClanMemberRepository;
 import org.kpagan.clash.clashserver.util.ClashUtils;
@@ -21,9 +20,6 @@ public class ClanMemberDonationsHandler implements QueryHandler {
 	public static final String CODE = "clan-member-donations";
 	
 	@Autowired
-	private ClanMemberDonationsService donationService;
-	
-	@Autowired
 	private ClanMemberRepository repo;
 	
 	@Override
@@ -31,9 +27,8 @@ public class ClanMemberDonationsHandler implements QueryHandler {
 		ClanMemberDonationsResponse response = new ClanMemberDonationsResponse();
 		
 		if (query.isPresent()) {
-			donationService.getClanMemberDetails(query.get());
 			List<ClanMember> members = repo.findByClanTag(ClashUtils.getTag(query.get()));
-			response.setMembers(detach(members));
+			response.setMembers(members);
 		}
 		return response;
 	}

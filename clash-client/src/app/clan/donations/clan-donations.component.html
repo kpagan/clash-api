@@ -1,7 +1,6 @@
-<div id="idle-players">
-  <h1>Find players of a clan that are idle</h1>
-  <div class="sub-heading">Idle players are considered the players of a clan that have <b>zero</b> donations and
-    haven't done a battle for a long time.</div>
+<div id="clan-member-donations">
+  <h1>Clan member donation statistics</h1>
+  <div class="sub-heading">Check how many cards a clan member donates, receives, average weekly donations, when he joined, and put some remarks.</div>
   <form>
     <mat-form-field>
       <input matInput placeholder="Clan tag" [formControl]="clanTagControl" [errorStateMatcher]="matcher">
@@ -17,7 +16,7 @@
     </button>
     <div class="clearfix"></div>
   </form>
-  <table mat-table id="idlePlayersTable" [dataSource]="dataSource" matSort aria-label="Elements">
+  <table mat-table id="clanMemberDonationsTable" [dataSource]="dataSource" matSort aria-label="Elements">
 
     <ng-container matColumnDef="{{column.columnDef}}" *ngFor="let column of columns">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.header}} </th>
@@ -28,10 +27,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <!--<mat-paginator #paginator
-    [length]="dataSource.data.length"
-    [pageIndex]="0"
-    [pageSize]="50"
-    [pageSizeOptions]="[25, 50, 100, 250]">
-  </mat-paginator>-->
 </div>
