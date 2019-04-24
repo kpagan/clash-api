@@ -68,15 +68,14 @@ public class ClanMemberDonationsService {
 				// player left before and rejoined, increase how many times has re-joined and reset the date that left the clan
 				clanMember.increaseTimesRejoined();
 				clanMember.setLeftClan(null);
+			}
+			if (player.getDonations() < clanMember.getWeekDonationsSoFar()) {
+				// update player donations from join day etc only after the change of the week
+				calculateDonations(clanMember);
 			} else {
-				if (player.getDonations() < clanMember.getWeekDonationsSoFar()) {
-					// update player donations from join day etc only after the change of the week
-					calculateDonations(clanMember);
-				} else {
-					// update last day donations only
-					clanMember.setWeekDonationsSoFar(player.getDonations());
-					clanMember.setWeekDonationsReceivedSoFar(player.getDonationsReceived());
-				}
+				// update last day donations only
+				clanMember.setWeekDonationsSoFar(player.getDonations());
+				clanMember.setWeekDonationsReceivedSoFar(player.getDonationsReceived());
 			}
 			return clanMember;
 		} else {
