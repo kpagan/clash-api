@@ -1,19 +1,17 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClanBaseComponent } from '../ClanBaseComponent';
 import { CookieService } from 'ngx-cookie-service';
 import { DonationsService } from './donations.service';
 import { ClanMemberDonationsModel } from './ClanMemberDonationsModel';
-import { MatSort, MatTableDataSource } from '@angular/material';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { ClanMemberDonationsResponse } from './ClanMemberDonationsResponse';
+import { MatSort } from '@angular/material';
+import { ClanDonationsDataSource } from './clan-donations-datasource';
 
 @Component({
   selector: 'app-clan-donations',
   templateUrl: './clan-donations.component.html',
   styleUrls: ['./clan-donations.component.scss']
 })
-export class ClanDonationsComponent extends ClanBaseComponent implements OnInit, AfterViewInit {
+export class ClanDonationsComponent extends ClanBaseComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   columns = [
@@ -46,7 +44,7 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit,
   ];
 
   displayedColumns = this.columns.map(x => x.columnDef);
-  dataSource: MatTableDataSource<ClanMemberDonationsModel>;
+  dataSource: ClanDonationsDataSource;
 
   constructor(private donationsService: DonationsService, protected cookieService: CookieService) {
     super(cookieService);
@@ -54,19 +52,12 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit,
 
   ngOnInit() {
     super.ngOnInit();
-    this.dataSource = new MatTableDataSource([]);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
+    this.dataSource = new ClanDonationsDataSource(this.donationsService, this.sort);
   }
 
   search() {
     super.search();
-    this.donationsService.getMemberDonations(this.clanTagControl.value).pipe(catchError(() => of(new ClanMemberDonationsResponse())))
-      .subscribe((members: ClanMemberDonationsResponse) => {
-        this.dataSource.data = members.members;
-      });
+    this.dataSource.loadMemberDonations(this.clanTagControl.value);
   }
 
 }

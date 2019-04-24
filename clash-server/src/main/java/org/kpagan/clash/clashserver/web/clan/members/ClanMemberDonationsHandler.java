@@ -1,6 +1,5 @@
 package org.kpagan.clash.clashserver.web.clan.members;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,7 +9,6 @@ import org.kpagan.clash.clashserver.domain.ClanMemberRepository;
 import org.kpagan.clash.clashserver.util.ClashUtils;
 import org.kpagan.clash.clashserver.web.QueryHandler;
 import org.kpagan.clash.clashserver.web.QueryResponse;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,15 +29,5 @@ public class ClanMemberDonationsHandler implements QueryHandler {
 			response.setMembers(members);
 		}
 		return response;
-	}
-	
-	private List<ClanMember> detach(List<ClanMember> attached) {
-		List<ClanMember> detached = new ArrayList<>();
-		for (ClanMember a : attached) {
-			ClanMember d = new ClanMember();
-			BeanUtils.copyProperties(a, d);
-			detached.add(d);
-		}
-		return detached;
 	}
 }
