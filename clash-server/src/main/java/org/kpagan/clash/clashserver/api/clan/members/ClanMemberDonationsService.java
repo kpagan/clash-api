@@ -50,9 +50,12 @@ public class ClanMemberDonationsService {
 		
 		List<ClanMember> clanMembersLeft = repo.findClanMembersNotIn(memberTags);
 		for (ClanMember leftMember: clanMembersLeft) {
-			leftMember.setLeftClan(LocalDate.now(ClashConfig.ATHENS));
-			calculateDonations(leftMember);
-			members.add(leftMember);
+			// compute donations only for members that left recently, do not recalculate members left previously
+			if (leftMember.getLeftClan() == null) {
+				leftMember.setLeftClan(LocalDate.now(ClashConfig.ATHENS));
+				calculateDonations(leftMember);
+				members.add(leftMember);
+			}
 		}
 		
 		repo.saveAll(members);
