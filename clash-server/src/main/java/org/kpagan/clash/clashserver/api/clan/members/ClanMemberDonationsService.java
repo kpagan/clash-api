@@ -28,7 +28,7 @@ public class ClanMemberDonationsService {
 	private ClanMemberRepository repo;
 
 	@Transactional
-	public void getClanMemberDetails(String clanTag) {
+	public void getClanMemberDonations(String clanTag) {
 		List<Future<PlayerDetailsInfo>> futures = clanMemberListService.getClanMembersAsync(clanTag);
 
 		int totalMembers = futures.size();

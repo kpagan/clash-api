@@ -4,6 +4,7 @@ import org.kpagan.clash.clashserver.api.clan.members.ClanMemberDonationsService;
 import org.kpagan.clash.clashserver.config.ClashConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +16,21 @@ public class Scheduler {
 	
 	@Value(value = "${clash.api.clanTag}")
 	private String clanTag;
-
 	
 	@Autowired
 	private ClanMemberDonationsService donationService;
-
-	// will run at 23:55 every day
-	@Scheduled(cron= "0 55 23 * * *", zone = ClashConfig.TIMEZONE_ID)
+	
+	@Autowired
+	private CacheManager cacheManager;
+	
+	// will run every hour
+	@Scheduled(cron= "0 0 * * * *", zone = ClashConfig.TIMEZONE_ID)
     public void updateClanMemberDonations() {
 		log.info("Updating clan member donation statistics");
-		donationService.getClanMemberDetails(clanTag);
+		// clear the caches prior getting statistics in order to get fresh data
+		cacheManager.getCache("player_details").clear();
+		donationService.getClanMemberDonations(clanTag);
 		log.info("Clan member donation statistics finished");
     }
+	
 }

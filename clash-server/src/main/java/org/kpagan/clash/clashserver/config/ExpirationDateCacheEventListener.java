@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
-import org.kpagan.clash.clashserver.api.scheduled.Scheduler;
-
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -14,8 +12,7 @@ import net.sf.ehcache.event.CacheEventListener;
 
 /**
  * This implementation of {@link CacheEventListener} sets the expiration time
- * until midnight minus ten minutes in order to evict elements in cache so the
- * {@link Scheduler} that will run 5 minutes before midnight to get fresh data
+ * until midnight in order to evict elements in cache so the
  * 
  * @author paganelis
  *
@@ -41,8 +38,7 @@ public class ExpirationDateCacheEventListener implements CacheEventListener {
 		ZonedDateTime expirationDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(element.getExpirationTime()), ClashConfig.ATHENS);
 		LocalDate today = LocalDate.now(ClashConfig.ATHENS);
 		LocalTime midnight = LocalTime.MIDNIGHT;
-		// expire 10 minutes before midnight as the Scheduler will run 5 minutes before midnight
-		ZonedDateTime todayMidnight = ZonedDateTime.of(today, midnight.minusMinutes(10), ClashConfig.ATHENS);
+		ZonedDateTime todayMidnight = ZonedDateTime.of(today, midnight, ClashConfig.ATHENS);
 
 		if (expirationDateTime.isAfter(todayMidnight)) {
 			element.setTimeToLive(secondsBetween(ZonedDateTime.now(ClashConfig.ATHENS), todayMidnight));
