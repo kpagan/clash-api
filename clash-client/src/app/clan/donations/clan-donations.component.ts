@@ -39,8 +39,8 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit 
       cell: (row: ClanMemberDonationsModel) => `${row.weekDonationsReceivedSoFar}`
     },
     { columnDef: 'timesRejoined', header: 'Rejoined', cell: (row: ClanMemberDonationsModel) => `${row.timesRejoined}` },
-    { columnDef: 'remarks', header: 'Remarks', cell: (row: ClanMemberDonationsModel) => `${row.remarks}` },
     { columnDef: 'leftClan', header: 'Left clan', cell: (row: ClanMemberDonationsModel) => `${row.leftClan}` },
+    { columnDef: 'remarks', header: 'Remarks', cell: (row: ClanMemberDonationsModel) => `${row.remarks}` },
   ];
 
   displayedColumns = this.columns.map(x => x.columnDef);

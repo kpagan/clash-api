@@ -1,6 +1,8 @@
 package org.kpagan.clash.clashserver.api.clan.members;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +28,7 @@ public class ClanMemberDonationsService {
 	
 	@Autowired
 	private ClanMemberRepository repo;
-
+	
 	@Transactional
 	public void getClanMemberDonations(String clanTag) {
 		List<Future<PlayerDetailsInfo>> futures = clanMemberListService.getClanMembersAsync(clanTag);
@@ -48,7 +50,8 @@ public class ClanMemberDonationsService {
 			}
 		}
 		
-		List<ClanMember> clanMembersLeft = repo.findClanMembersNotIn(memberTags);
+		List<ClanMember> clanMembersLeft = repo.findByTagNotIn(memberTags);
+//		List<ClanMember> clanMembersLeft = repo.findAll();
 		for (ClanMember leftMember: clanMembersLeft) {
 			// compute donations only for members that left recently, do not recalculate members left previously
 			if (leftMember.getLeftClan() == null) {
@@ -69,7 +72,7 @@ public class ClanMemberDonationsService {
 				clanMember.increaseTimesRejoined();
 				clanMember.setLeftClan(null);
 			}
-			if (player.getDonations() < clanMember.getWeekDonationsSoFar()) {
+			if (isWeekReset()) {
 				// update player donations from join day etc only after the change of the week
 				calculateDonations(clanMember);
 			} else {
@@ -87,6 +90,13 @@ public class ClanMemberDonationsService {
 			initPlayer(player, member);
 			return member;
 		}
+	}
+
+	// returns true when time is between 00:00 and 00:01 on Mondays
+	private boolean isWeekReset() {
+		return LocalDate.now(ClashConfig.ATHENS).getDayOfWeek() == DayOfWeek.MONDAY
+				&& LocalTime.now(ClashConfig.ATHENS).isAfter(LocalTime.MIDNIGHT)
+				&& LocalTime.now(ClashConfig.ATHENS).isBefore(LocalTime.MIDNIGHT.plusMinutes(1));
 	}
 
 	private void calculateDonations(ClanMember clanMember) {
