@@ -60,20 +60,29 @@ export class ClanDonationsDataSource extends DataSource<ClanMemberDonationsModel
 
         return data.sort((a, b) => {
             const isAsc = this.sort.direction === 'asc';
-            if (isNaN(a[this.sort.active])) {
-                return compare(a[this.sort.active], b[this.sort.active], isAsc);
-            } else {
+            if (isNumber(a[this.sort.active]) && isNumber(b[this.sort.active])) {
                 return compare(+a[this.sort.active], +b[this.sort.active], isAsc);
+            } else {
+                return compare(a[this.sort.active], b[this.sort.active], isAsc);
             }
         });
     }
 }
 
 /** Simple sort comparator for example (for client-side sorting). */
-function compare(a, b, isAsc) {
+function compare(a: any, b: any, isAsc: boolean) {
+    if (a === null) {
+        return 1;
+    } else if (b === null) {
+        return -1;
+    }
     if (isNaN(a) && isNaN(b)) {
         return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
     } else {
         return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
+}
+
+function isNumber(a: any): boolean {
+    return a === null || a === undefined ? false : !isNaN(a);
 }
