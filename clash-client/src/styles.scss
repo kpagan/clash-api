@@ -13,3 +13,11 @@
 .mat-form-field {
     margin: 4px 4px 4px 0px;
 }
+
+.mat-row:nth-child(even){
+    background-color: lightgray;
+}
+
+.mat-row:nth-child(odd){
+    background-color: white;
+}
