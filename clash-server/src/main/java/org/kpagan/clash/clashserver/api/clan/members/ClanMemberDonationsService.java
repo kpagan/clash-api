@@ -4,9 +4,13 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.kpagan.clash.clashserver.api.BaseService;
 import org.kpagan.clash.clashserver.api.player.PlayerDetailsInfo;
@@ -25,9 +29,14 @@ public class ClanMemberDonationsService {
 
 	@Autowired
 	private ClanMemberListService clanMemberListService;
-	
+
 	@Autowired
 	private ClanMemberRepository repo;
+
+	@Autowired
+	private ExecutorService executor;
+
+	private final ReentrantLock lock = new ReentrantLock();
 	
 	@Transactional
 	public void getClanMemberDonations(String clanTag) {
@@ -35,40 +44,64 @@ public class ClanMemberDonationsService {
 
 		int totalMembers = futures.size();
 		int current = 0;
-		List<String> memberTags = new ArrayList<>(totalMembers);
-		List<ClanMember> members = new ArrayList<>();
+		List<String> memberTags = Collections.synchronizedList(new ArrayList<>(totalMembers));
+		List<ClanMember> members = Collections.synchronizedList(new ArrayList<>());
+		CountDownLatch currentMembersLatch = new CountDownLatch(totalMembers);
+
 		for (Future<PlayerDetailsInfo> future : futures) {
 			double progress = ((double) ++current / totalMembers) * 100;
-			try {
-				PlayerDetailsInfo player = future.get();
-				log.info("Got response for member {}. Progress: {}%", player.getName(), BaseService.percentageFormatter.format(progress));
-				Optional<ClanMember> dbPlayer = repo.findById(player.getTag());
-				members.add(map(player, dbPlayer));
-				memberTags.add(player.getTag());
-			} catch (Exception e) {
-				log.error("Error while getting details info for player", e);
-			}
+			executor.execute(() -> {
+				try {
+					PlayerDetailsInfo player = future.get();
+					log.info("Got response for member {}. Progress: {}%", player.getName(),
+							BaseService.percentageFormatter.format(progress));
+					Optional<ClanMember> dbPlayer = repo.findById(player.getTag());
+					members.add(map(player, dbPlayer));
+					memberTags.add(player.getTag());
+				} catch (Exception e) {
+					log.error("Error while getting details info for player", e);
+				} finally {
+					currentMembersLatch.countDown();
+					log.info("Finished member {}", currentMembersLatch.getCount());
+				}
+			});
 		}
-		
+
 		List<ClanMember> clanMembersLeft = repo.findByTagNotIn(memberTags);
-//		List<ClanMember> clanMembersLeft = repo.findAll();
-		for (ClanMember leftMember: clanMembersLeft) {
-			// compute donations only for members that left recently, do not recalculate members left previously
-			if (leftMember.getLeftClan() == null) {
-				leftMember.setLeftClan(LocalDate.now(ClashConfig.ATHENS));
-				calculateDonations(leftMember);
-				members.add(leftMember);
+		CountDownLatch leftMembersLatch = new CountDownLatch(clanMembersLeft.size());
+		for (ClanMember leftMember : clanMembersLeft) {
+			// compute donations only for members that left recently, do not recalculate
+			// members left previously
+			lock.lock();
+			try {
+				log.info("Player {} left clan on: {}", leftMember.getName(), leftMember.getLeftClan());
+				if (leftMember.getLeftClan() == null) {
+					leftMember.setLeftClan(LocalDate.now(ClashConfig.ATHENS));
+					calculateDonations(leftMember);
+					members.add(leftMember);
+				}
+			} finally {
+				lock.unlock();
+				leftMembersLatch.countDown();
 			}
 		}
 		
+		try {
+			currentMembersLatch.await();
+			leftMembersLatch.await();
+		} catch (InterruptedException e) {
+			log.error("Error waiting threads to complete tasks.", e);
+		}
+
 		repo.saveAll(members);
 	}
-	
-	private ClanMember map(PlayerDetailsInfo player, Optional<ClanMember> dbPlayer) {
+
+	private synchronized ClanMember map(PlayerDetailsInfo player, Optional<ClanMember> dbPlayer) {
 		if (dbPlayer.isPresent()) {
 			ClanMember clanMember = dbPlayer.get();
 			if (clanMember.getLeftClan() != null) {
-				// player left before and rejoined, increase how many times has re-joined and reset the date that left the clan
+				// player left before and rejoined, increase how many times has re-joined and
+				// reset the date that left the clan
 				clanMember.increaseTimesRejoined();
 				clanMember.setLeftClan(null);
 			}
@@ -101,21 +134,25 @@ public class ClanMemberDonationsService {
 
 	private void calculateDonations(ClanMember clanMember) {
 		clanMember.setDonatedFromJoinDay(clanMember.getDonatedFromJoinDay() + clanMember.getWeekDonationsSoFar());
-		clanMember.setReceivedFromJoinDay(clanMember.getReceivedFromJoinDay() + clanMember.getWeekDonationsReceivedSoFar());
+		clanMember.setReceivedFromJoinDay(
+				clanMember.getReceivedFromJoinDay() + clanMember.getWeekDonationsReceivedSoFar());
 		int avg = clanMember.getAverageWeeklyDonations();
 		if (avg == 0) {
 			// for the 1st time just get the donations so far
 			avg = clanMember.getWeekDonationsSoFar();
 		} else {
-			// update average donations by summing previous average with current donations and divide by two
-			avg = (int) Math.round(((double) (clanMember.getAverageWeeklyDonations() + clanMember.getWeekDonationsSoFar())) / 2);
+			// update average donations by summing previous average with current donations
+			// and divide by two
+			avg = (int) Math.round(
+					((double) (clanMember.getAverageWeeklyDonations() + clanMember.getWeekDonationsSoFar())) / 2);
 		}
 		clanMember.setAverageWeeklyDonations(avg);
 	}
 
 	private void initPlayer(PlayerDetailsInfo player, ClanMember member) {
 		member.setMemberSince(LocalDate.now(ClashConfig.ATHENS));
-		// initialize donations to zero since the statistics are calculated when the week changes
+		// initialize donations to zero since the statistics are calculated when the
+		// week changes
 		member.setDonatedFromJoinDay(0);
 		member.setAverageWeeklyDonations(0);
 		member.setReceivedFromJoinDay(0);

@@ -1,6 +1,7 @@
 /target/
 /.mvn/
 /db/
+/logs/
 
 ### STS ###
 .apt_generated

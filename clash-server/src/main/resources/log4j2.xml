@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="Clash Royale API"
+	packages="">
+	<Properties>
+		<Property name="PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %5p [%t] --- %c{1}: %m%n</Property>
+	</Properties>
+	<Appenders>
+		<RollingRandomAccessFile name="RollingRandomAccessFile"
+			fileName="logs/clash.log" filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>${PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="6"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingRandomAccessFile>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="${PATTERN}" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="RollingRandomAccessFile" />
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+</Configuration>
