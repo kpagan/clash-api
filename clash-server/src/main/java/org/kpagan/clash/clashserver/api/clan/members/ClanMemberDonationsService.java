@@ -66,6 +66,12 @@ public class ClanMemberDonationsService {
 				}
 			});
 		}
+		
+		try {
+			currentMembersLatch.await();
+		} catch (InterruptedException e) {
+			log.error("Error waiting threads to complete tasks.", e);
+		}
 
 		List<ClanMember> clanMembersLeft = repo.findByTagNotIn(memberTags);
 		CountDownLatch leftMembersLatch = new CountDownLatch(clanMembersLeft.size());
@@ -87,7 +93,6 @@ public class ClanMemberDonationsService {
 		}
 		
 		try {
-			currentMembersLatch.await();
 			leftMembersLatch.await();
 		} catch (InterruptedException e) {
 			log.error("Error waiting threads to complete tasks.", e);
