@@ -35,6 +35,7 @@ public class ClanMemberCardService {
 				Optional<CardsInfo> wantedCard = player.getCards().stream()
 						.filter(card -> card.getName().equals(requestedCard) && card.getCount() >= count).findFirst();
 				if (wantedCard.isPresent()) {
+					player.setDesiredCardCount(wantedCard.get().getCount());
 					eligiblePlayers.add(player);
 				}
 			} catch (Exception e) {
@@ -53,6 +54,7 @@ public class ClanMemberCardService {
 	 * 	<li>name</li>
 	 * 	<li>currentDeck</li>
 	 * 	<li>currentFavouriteCard</li>
+	 * 	<li>desiredCardCount</li>
 	 * </ul>
 	 * @param players
 	 * @return
@@ -66,6 +68,7 @@ public class ClanMemberCardService {
 			clean.setCurrentDeck(player.getCurrentDeck());
 			clean.getCurrentDeck().forEach(CardsInfo::correctLevels);
 			clean.setCurrentFavouriteCard(player.getCurrentFavouriteCard());
+			clean.setDesiredCardCount(player.getDesiredCardCount());
 			cleaned.add(clean);
 		}
 		return cleaned;

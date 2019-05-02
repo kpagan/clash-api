@@ -21,3 +21,7 @@
 .mat-row:nth-child(odd){
     background-color: white;
 }
+
+td.mat-cell {
+    padding: 0px 2px !important;
+}

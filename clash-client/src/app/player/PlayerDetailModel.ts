@@ -32,4 +32,6 @@ export class PlayerDetailModel {
     cards: CardsModel[];
     currentDeck: CardsModel[];
     currentFavouriteCard: BasicCardModel;
+
+    desiredCardCount: number;
 }

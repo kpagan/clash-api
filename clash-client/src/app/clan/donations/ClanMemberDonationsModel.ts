@@ -11,4 +11,6 @@ export class ClanMemberDonationsModel {
     weekDonationsReceivedSoFar: number;
     timesRejoined: number;
     remarks: string;
+    donatedReceivedFromJoinDayRatio: number;
+    donatedReceivedSoFarRatio: number;
 }

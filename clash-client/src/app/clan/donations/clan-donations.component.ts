@@ -27,6 +27,11 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit 
       cell: (row: ClanMemberDonationsModel) => `${row.receivedFromJoinDay}`
     },
     {
+      columnDef: 'donatedReceivedFromJoinDayRatio', header: 'Received/Donated ratio',
+      cell: (row: ClanMemberDonationsModel) =>
+        `${(Math.round(row.donatedReceivedFromJoinDayRatio * 100) / 100).toFixed(2).replace('\.00', '')}`
+    },
+    {
       columnDef: 'averageWeeklyDonations', header: 'Average weekly donations',
       cell: (row: ClanMemberDonationsModel) => `${row.averageWeeklyDonations}`
     },
@@ -37,6 +42,11 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit 
     {
       columnDef: 'weekDonationsReceivedSoFar', header: 'Weekly donations received so far',
       cell: (row: ClanMemberDonationsModel) => `${row.weekDonationsReceivedSoFar}`
+    },
+    {
+      columnDef: 'donatedReceivedSoFarRatio', header: 'Received/Donated so far ratio',
+      cell: (row: ClanMemberDonationsModel) =>
+        `${(Math.round(row.donatedReceivedSoFarRatio * 100) / 100).toFixed(2).replace('\.00', '')}`
     },
     { columnDef: 'timesRejoined', header: 'Rejoined', cell: (row: ClanMemberDonationsModel) => `${row.timesRejoined}` },
     { columnDef: 'leftClan', header: 'Left clan', cell: (row: ClanMemberDonationsModel) => `${row.leftClan}` },

@@ -37,4 +37,9 @@ public class PlayerDetailsInfo {
 	private List<CardsInfo> cards;
 	private List<CardsInfo> currentDeck;
 	private BasicCardInfo currentFavouriteCard;
+	
+	/**
+	 * This is the number of cards that the player has that are queried in the 'trade cards' functionality
+	 */
+	private Integer desiredCardCount;
 }

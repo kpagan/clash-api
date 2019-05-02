@@ -46,3 +46,24 @@
     padding-top: 4px;
     padding-left: 4px;
 }
+
+$cirlceSize: 2.5em;
+
+.numberCircle {
+    font: 16px Arial, sans-serif;
+
+    width: $cirlceSize;
+    height: $cirlceSize;
+    box-sizing: initial;
+
+    background: #666;
+    border: 0.1em solid #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;    
+
+    line-height: $cirlceSize;
+    box-sizing: content-box;
+    margin-right:0;
+    margin-left: auto;
+}
