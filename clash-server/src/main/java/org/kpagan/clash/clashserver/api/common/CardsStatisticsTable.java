@@ -40,10 +40,10 @@ public class CardsStatisticsTable {
 	private static final Map<CardType, List<Integer>> LEVELS = new HashMap<CardType, List<Integer>>() {
 		private static final long serialVersionUID = 1L;
 		{
-			put(CardType.COMMON, Arrays.asList(1, 2, 4, 10, 20, 50, 100, 200, 400, 800, 1000, 2000, 5000));
-			put(CardType.RARE, Arrays.asList(1, 2, 4, 10, 20, 50, 100, 200, 400, 800, 1000));
-			put(CardType.EPIC, Arrays.asList(1, 2, 4, 10, 20, 50, 100, 200));
-			put(CardType.LEGENDARY, Arrays.asList(1, 2, 4, 10, 20));
+			put(CardType.COMMON, Arrays.asList(1, 2, 4, 10, 20, 50, 100, 200, 400, 800, 1000, 2000, 5000, 0));
+			put(CardType.RARE, Arrays.asList(1, 2, 4, 10, 20, 50, 100, 200, 400, 800, 1000, 0));
+			put(CardType.EPIC, Arrays.asList(1, 2, 4, 10, 20, 50, 100, 200, 0));
+			put(CardType.LEGENDARY, Arrays.asList(1, 2, 4, 10, 20, 0));
 		}
 	};
 
