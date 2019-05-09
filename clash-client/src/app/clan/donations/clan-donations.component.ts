@@ -5,6 +5,7 @@ import { DonationsService } from './donations.service';
 import { ClanMemberDonationsModel } from './ClanMemberDonationsModel';
 import { MatSort } from '@angular/material';
 import { ClanDonationsDataSource } from './clan-donations-datasource';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-clan-donations',
@@ -13,6 +14,7 @@ import { ClanDonationsDataSource } from './clan-donations-datasource';
 })
 export class ClanDonationsComponent extends ClanBaseComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
+  leftMembersToggle: FormControl = new FormControl();
 
   columns = [
     { columnDef: 'tag', header: 'Tag', cell: (row: ClanMemberDonationsModel) => `${row.tag}` },
@@ -69,6 +71,10 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit 
   search() {
     super.search();
     this.dataSource.loadMemberDonations(this.clanTagControl.value);
+  }
+
+  toggleLeftMembers() {
+    this.dataSource.toggleFilter(this.leftMembersToggle.value); 
   }
 
 }

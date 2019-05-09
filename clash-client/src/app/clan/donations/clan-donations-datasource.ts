@@ -14,6 +14,7 @@ import { ClanMemberDonationsResponse } from './ClanMemberDonationsResponse';
  */
 export class ClanDonationsDataSource extends DataSource<ClanMemberDonationsModel> {
     donationSubject = new BehaviorSubject<ClanMemberDonationsModel[]>([]);
+    leftMembersSubject = new BehaviorSubject<boolean>(false);
 
     constructor(private donationsService: DonationsService, private sort: MatSort) {
         super();
@@ -29,11 +30,12 @@ export class ClanDonationsDataSource extends DataSource<ClanMemberDonationsModel
         // stream for the data-table to consume.
         const dataMutations = [
             this.donationSubject.asObservable(),
-            this.sort.sortChange
+            this.sort.sortChange,
+            this.leftMembersSubject.asObservable()
         ];
 
         return merge(...dataMutations).pipe(map(() => {
-            return this.getSortedData([...this.donationSubject.value]);
+            return this.getSortedData(this.filterLeftMembers([...this.donationSubject.value]));
         }));
     }
 
@@ -43,10 +45,18 @@ export class ClanDonationsDataSource extends DataSource<ClanMemberDonationsModel
      */
     disconnect() { }
 
+    filterLeftMembers(data: ClanMemberDonationsModel[]) {
+        return this.leftMembersSubject.value ? data : data.filter((entry) => entry.leftClan === null);
+    }
+
     loadMemberDonations(clanTag: string) {
         this.donationsService.getMemberDonations(clanTag).pipe(
             catchError(() => of(new IdleClanMemberResponse()))
         ).subscribe((members: ClanMemberDonationsResponse) => this.donationSubject.next(members.members));
+    }
+
+    toggleFilter(value: boolean) {
+        this.leftMembersSubject.next(value);
     }
 
     /**

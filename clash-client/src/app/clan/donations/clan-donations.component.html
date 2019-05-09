@@ -14,6 +14,7 @@
     <button mat-mini-fab color="primary" type="button" (click)="search()">
       <mat-icon>search</mat-icon>
     </button>
+    <mat-slide-toggle color="primary" class="pull-right" [formControl]="leftMembersToggle" (change)="toggleLeftMembers()">Show left members</mat-slide-toggle>
     <div class="clearfix"></div>
   </form>
   <div class="stickyTable">
