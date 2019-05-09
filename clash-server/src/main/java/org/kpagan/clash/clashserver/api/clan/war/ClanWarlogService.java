@@ -29,7 +29,8 @@ public class ClanWarlogService extends BaseService<WarlogInfo> {
 		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("clans", ClashUtils.getTag(clanTag), "warlog").build();
 		return getInfo(u.toUri());
 	}
-	
+
+	@Cacheable(value = "clan_warlog", key = "#clanTag")
 	public Future<WarlogInfo> getWarlogAsync(String clanTag) {
 		Future<WarlogInfo> future = executor.submit(() -> {
 			log.info("Looking for warlog for clan {}", clanTag);
