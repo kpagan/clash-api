@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.kpagan.clash.clashserver.api.BaseService;
@@ -29,51 +27,37 @@ public class ClanMemberDonationsService {
 	private ClanMemberRepository repo;
 
 	@Autowired
-	private ExecutorService executor;
-
-	@Autowired
 	private StatisticsCalculationService statService;
 	
 	@Transactional
 	public void getClanMemberDonations(String clanTag) {
-		List<Future<PlayerDetailsInfo>> futures = clanMemberListService.getClanMembersAsync(clanTag);
-
-		int totalMembers = futures.size();
-		int current = 0;
-		List<String> memberTags = Collections.synchronizedList(new ArrayList<>(totalMembers));
-		List<ClanMember> members = Collections.synchronizedList(new ArrayList<>());
-		CountDownLatch currentMembersLatch = new CountDownLatch(totalMembers);
-
-		for (Future<PlayerDetailsInfo> future : futures) {
-			double progress = ((double) ++current / totalMembers) * 100;
-			executor.execute(() -> {
-				try {
-					PlayerDetailsInfo player = future.get();
-					log.info("Got response for member {}. Progress: {}%", player.getName(),
-							BaseService.percentageFormatter.format(progress));
-					Optional<ClanMember> dbPlayer = repo.findById(player.getTag());
-					members.add(statService.calculate(player, dbPlayer));
-					memberTags.add(player.getTag());
-				} catch (Exception e) {
-					log.error("Error while getting details info for player", e);
-				} finally {
-					currentMembersLatch.countDown();
-					log.info("Finished member {}", currentMembersLatch.getCount());
-				}
-			});
-		}
-		
 		try {
-			currentMembersLatch.await();
-		} catch (InterruptedException e) {
-			log.error("Error waiting threads to complete tasks.", e);
+			List<Future<PlayerDetailsInfo>> futures = clanMemberListService.getClanMembersAsync(clanTag);
+			
+			int totalMembers = futures.size();
+			int current = 0;
+			List<String> memberTags = Collections.synchronizedList(new ArrayList<>(totalMembers));
+			List<ClanMember> members = Collections.synchronizedList(new ArrayList<>());
+			
+			for (Future<PlayerDetailsInfo> future : futures) {
+				double progress = ((double) ++current / totalMembers) * 100;
+				PlayerDetailsInfo player = future.get();
+				log.info("Got response for member {}. Progress: {}%", player.getName(),
+						BaseService.percentageFormatter.format(progress));
+				Optional<ClanMember> dbPlayer = repo.findById(player.getTag());
+				members.add(statService.calculate(player, dbPlayer));
+				memberTags.add(player.getTag());
+				log.info("Finished member {}", player.getName());
+			}
+			
+			List<ClanMember> clanMembersLeft = repo.findByTagNotIn(memberTags);
+			statService.calculateLeftMembersStats(clanMembersLeft);
+			members.addAll(clanMembersLeft);
+
+			repo.saveAll(members);
+		} catch (Exception e) {
+			log.error("Error while updating statistics for clan {}", clanTag, e);
 		}
-
-		List<ClanMember> clanMembersLeft = repo.findByTagNotIn(memberTags);
-		statService.calculateLeftMembersStats(clanMembersLeft);
-		members.addAll(clanMembersLeft);
-
-		repo.saveAll(members);
 	}
 
 }

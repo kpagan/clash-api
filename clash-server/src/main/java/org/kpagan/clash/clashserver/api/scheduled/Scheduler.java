@@ -23,8 +23,8 @@ public class Scheduler {
 	@Autowired
 	private CacheManager cacheManager;
 	
-	// will run every hour
-	@Scheduled(cron= "0 0 * * * *", zone = ClashConfig.TIMEZONE_ID)
+	// will run every 4 hours
+	@Scheduled(cron= "0 0 */4 * * *", zone = ClashConfig.TIMEZONE_ID)
     public void updateClanMemberDonations() {
 		log.info("Updating clan member donation statistics");
 		// clear the caches prior getting statistics in order to get fresh data
