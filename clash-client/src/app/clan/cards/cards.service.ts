@@ -14,7 +14,7 @@ import { GameCardsResponse } from './GameCardsResponse';
 })
 export class CardsService extends BaseService {
 
-  private url = '/clan-member-cards/%23';
+  private url = '/clan-member-cards/';
 
   constructor(protected http: HttpClient, protected messageService: MessageService) {
     super(http, messageService);

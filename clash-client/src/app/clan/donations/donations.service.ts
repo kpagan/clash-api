@@ -11,7 +11,7 @@ import { ClanMemberDonationsResponse } from './ClanMemberDonationsResponse';
 })
 export class DonationsService extends BaseService {
 
-  private url = '/clan-member-donations/%23';
+  private url = '/clan-member-donations/';
 
   constructor(protected http: HttpClient, protected messageService: MessageService) {
     super(http, messageService);
