@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./clan-donations.component.scss']
 })
 export class ClanDonationsComponent extends ClanBaseComponent implements OnInit {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   leftMembersToggle: FormControl = new FormControl();
 
   columns = [

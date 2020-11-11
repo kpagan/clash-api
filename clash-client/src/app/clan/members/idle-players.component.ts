@@ -13,8 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./idle-players.component.scss']
 })
 export class IdlePlayersComponent extends ClanBaseComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   columns = [
     { columnDef: 'tag', header: 'Tag', cell: (row: ClanMemberBattleLogModel) => `${row.tag}` },

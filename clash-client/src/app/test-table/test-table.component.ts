@@ -8,8 +8,8 @@ import { TestTableDataSource } from './test-table-datasource';
   styleUrls: ['./test-table.component.scss']
 })
 export class TestTableComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   dataSource: TestTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
