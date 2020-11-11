@@ -1,5 +1,5 @@
 import { DataSource } from '@angular/cdk/collections';
-import { MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, merge, BehaviorSubject, of } from 'rxjs';
 import { ClanMemberDonationsModel } from './ClanMemberDonationsModel';

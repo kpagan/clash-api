@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MemberService } from './member.service';
 import { ClanMemberBattleLogModel } from './ClanMemberBattleLogModel';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { IdlePlayersDataSource } from './idle-players-datasource';
 import { ClanBaseComponent } from '../ClanBaseComponent';
 import { CookieService } from 'ngx-cookie-service';

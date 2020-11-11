@@ -1,5 +1,6 @@
 import { DataSource, CollectionViewer } from '@angular/cdk/collections';
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { Observable, of as observableOf, merge, BehaviorSubject, of } from 'rxjs';
 import { ClanMemberModel } from './ClanMemberModel';

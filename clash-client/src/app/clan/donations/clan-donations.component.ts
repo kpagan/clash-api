@@ -3,7 +3,7 @@ import { ClanBaseComponent } from '../ClanBaseComponent';
 import { CookieService } from 'ngx-cookie-service';
 import { DonationsService } from './donations.service';
 import { ClanMemberDonationsModel } from './ClanMemberDonationsModel';
-import { MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 import { ClanDonationsDataSource } from './clan-donations-datasource';
 import { FormControl } from '@angular/forms';
 
