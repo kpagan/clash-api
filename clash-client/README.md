@@ -1,5 +1,22 @@
 # ClashClient
 
+## Setup the local development environment
+
+Due to the fact that the project was built with Angular 7 several versions of the tools need to be locked because it won't run with the latest versions.
+
+Install a 10.x.x release of Node.js from https://nodejs.org/dist/latest-v10.x/.
+
+Install the Angular CLI
+
+```
+npm install -g @angular/cli@7.1.3
+```
+
+Install node-sass version `4.11.0` if necessary
+```
+npm install node-sass@4.11.0
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.3.
 
 ## Launching the UI
