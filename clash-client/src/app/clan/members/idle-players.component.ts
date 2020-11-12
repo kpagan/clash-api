@@ -15,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./idle-players.component.scss']
 })
 export class IdlePlayersComponent extends ClanBaseComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   columns = [
