@@ -23,6 +23,7 @@ public class StatisticsCalculationService {
 	public synchronized ClanMember calculate(PlayerDetailsInfo player, Optional<ClanMember> dbPlayer) {
 		if (dbPlayer.isPresent()) {
 			ClanMember clanMember = dbPlayer.get();
+			clanMember.setName(player.getName()); // update name in case it is changed
 			if (clanMember.getLeftClan() != null) {
 				log.info("Player {} rejoined, he left on {}", clanMember.getName(), clanMember.getLeftClan());
 				// player left before and rejoined, increase how many times has re-joined and
@@ -81,18 +82,20 @@ public class StatisticsCalculationService {
 		clanMember.setReceivedFromJoinDay(
 				clanMember.getReceivedFromJoinDay() + clanMember.getWeekDonationsReceivedSoFar());
 		int avg = clanMember.getAverageWeeklyDonations();
+		int avgCount = clanMember.getAverageWeeklyDonationsCount();
 		log.info("Player {} has average weekly donations: {}", clanMember.getName(), avg);
 		if (avg == 0) {
 			// for the 1st time just get the donations so far
 			avg = clanMember.getWeekDonationsSoFar();
 		} else {
-			// update average donations by summing previous average with current donations
-			// and divide by two
+			// update average donations by summing (previous average)*(previous count) + current donations
+			// and divide by the count
 			avg = (int) Math.round(
-					((double) (clanMember.getAverageWeeklyDonations() + clanMember.getWeekDonationsSoFar())) / 2);
+					((double) (avgCount * clanMember.getAverageWeeklyDonations() + clanMember.getWeekDonationsSoFar())) / (avgCount + 1));
 		}
 		log.info("Player {} NEW average weekly donations: {}", clanMember.getName(), avg);
 		clanMember.setAverageWeeklyDonations(avg);
+		clanMember.setAverageWeeklyDonationsCount(avgCount + 1);
 	}
 
 	private void initPlayer(PlayerDetailsInfo player, ClanMember member) {
@@ -101,6 +104,7 @@ public class StatisticsCalculationService {
 		// week changes
 		member.setDonatedFromJoinDay(0);
 		member.setAverageWeeklyDonations(0);
+		member.setAverageWeeklyDonationsCount(1);
 		member.setReceivedFromJoinDay(0);
 		member.setWeekDonationsSoFar(player.getDonations());
 		member.setWeekDonationsReceivedSoFar(player.getDonationsReceived());

@@ -15,25 +15,25 @@ import lombok.extern.log4j.Log4j2;
 
 @Service
 @Log4j2
-public class ClanWarlogService extends BaseService<WarlogInfo> {
+public class CurrentRiverRaceService extends BaseService<CurrentRiverRaceInfo> {
 
 	@Autowired
 	private ExecutorService executor;
 
-	protected ClanWarlogService() {
-		super(WarlogInfo.class);
+	protected CurrentRiverRaceService() {
+		super(CurrentRiverRaceInfo.class);
 	}
 	
-	@Cacheable(value = "clan_warlog", key = "#clanTag")
-	public WarlogInfo getWarlog(String clanTag) {
-		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("clans", ClashUtils.getTag(clanTag), "warlog").build();
+	@Cacheable(value = "currentriverrace", key = "#clanTag")
+	public CurrentRiverRaceInfo getWarlog(String clanTag) {
+		UriComponents u = UriComponentsBuilder.fromHttpUrl(baseUrl).pathSegment("clans", ClashUtils.getTag(clanTag), "currentriverrace").build();
 		return getInfo(u.toUri());
 	}
 
-	@Cacheable(value = "clan_warlog", key = "#clanTag")
-	public Future<WarlogInfo> getWarlogAsync(String clanTag) {
-		Future<WarlogInfo> future = executor.submit(() -> {
-			log.info("Looking for warlog for clan {}", clanTag);
+	@Cacheable(value = "currentriverrace", key = "#clanTag")
+	public Future<CurrentRiverRaceInfo> getWarlogAsync(String clanTag) {
+		Future<CurrentRiverRaceInfo> future = executor.submit(() -> {
+			log.info("Looking for current river race clan [{}]", clanTag);
 			return getWarlog(clanTag);
 		});
 		return future;

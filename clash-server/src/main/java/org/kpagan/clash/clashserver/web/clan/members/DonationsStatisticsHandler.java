@@ -28,7 +28,7 @@ public class DonationsStatisticsHandler implements QueryHandler {
 		ClanMemberDonationsResponse response = new ClanMemberDonationsResponse();
 		if (query.isPresent()) {
 			cacheManager.getCache("player_details").clear();
-			donationService.getClanMemberDonations(query.get());
+			donationService.updateClanMemberDonations(query.get());
 		}
 		return response;
 	}

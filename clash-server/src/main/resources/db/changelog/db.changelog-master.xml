@@ -33,5 +33,14 @@
 			<column name="remarks" type="varchar(4000)" />
 		</addColumn>
 	</changeSet>
+	
+	<changeSet id="add_average_week_donations_count_column" author="paganelis">
+		<addColumn tableName="clan_member">
+			<column name="average_week_donations_count" type="BIGINT" afterColumn="average_week_donations" defaultValueNumeric="0" />
+		</addColumn>
+		<update tableName="clan_member">
+			<column name="average_week_donations" valueNumeric="0" />
+		</update>
+	</changeSet>
 
 </databaseChangeLog>

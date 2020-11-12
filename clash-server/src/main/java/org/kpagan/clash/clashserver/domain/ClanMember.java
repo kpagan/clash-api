@@ -49,6 +49,9 @@ public class ClanMember {
 	@Column(name = "average_week_donations")
 	private Integer averageWeeklyDonations;
 	
+	@Column(name = "average_week_donations_count")
+	private Integer averageWeeklyDonationsCount;
+	
 	@Column(name = "week_donations_so_far")
 	private Integer weekDonationsSoFar;
 	

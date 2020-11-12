@@ -27,7 +27,7 @@ public class ClanMemberInfo {
 	private Integer weekDonationsReceivedSoFar;
 	private Integer timesRejoined;
 	private String remarks;
-	private Integer totalWarDayWins;
+	private Integer currentWarPoints;
 	
 	public Double getDonatedReceivedFromJoinDayRatio() {
 		return receivedFromJoinDay == 0 && donatedFromJoinDay == 0 ? 0 : donatedFromJoinDay == 0 ? Double.MAX_VALUE : (double) receivedFromJoinDay / donatedFromJoinDay;

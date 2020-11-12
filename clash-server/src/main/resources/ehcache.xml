@@ -15,7 +15,7 @@
 		<cacheEventListenerFactory listenFor="local"
                class="org.kpagan.clash.clashserver.config.ExpirationDateCacheEventListenerFactory"/>
 	</cache>
-	<cache name="clan_warlog" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
+	<cache name="currentriverrace" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="86400">
 		<persistence strategy="none" />
 		<cacheEventListenerFactory listenFor="local"
                class="org.kpagan.clash.clashserver.config.ExpirationDateCacheEventListenerFactory"/>

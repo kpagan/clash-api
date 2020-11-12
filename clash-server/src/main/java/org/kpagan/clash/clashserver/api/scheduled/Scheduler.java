@@ -29,7 +29,7 @@ public class Scheduler {
 		log.info("Updating clan member donation statistics");
 		// clear the caches prior getting statistics in order to get fresh data
 		cacheManager.getCache("player_details").clear();
-		donationService.getClanMemberDonations(clanTag);
+		donationService.updateClanMemberDonations(clanTag);
 		log.info("Clan member donation statistics finished");
     }
 	

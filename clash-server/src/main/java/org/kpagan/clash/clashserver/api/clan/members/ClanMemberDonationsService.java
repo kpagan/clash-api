@@ -30,7 +30,7 @@ public class ClanMemberDonationsService {
 	private StatisticsCalculationService statService;
 	
 	@Transactional
-	public void getClanMemberDonations(String clanTag) {
+	public void updateClanMemberDonations(String clanTag) {
 		try {
 			List<Future<PlayerDetailsInfo>> futures = clanMemberListService.getClanMembersAsync(clanTag);
 			

@@ -41,7 +41,7 @@ public class ClanMemberListService extends BaseService<ClanMemberListInfo> {
 		
 		for (ClanMemberInfo member : clanMembers.getItems()) {
 			Future<PlayerDetailsInfo> future = executor.submit(() -> {
-				log.info("Looking for member {}", member.getName());
+				log.info("Looking for member [{}]", member.getName());
 				return playerService.getPlayer(member.getTag());
 			});
 			futures.add(future);

@@ -13,4 +13,15 @@ public final class ClashUtils {
 			return "#".concat(tag);
 		}
 	}
+	
+	public static final int nullSafeAdd(Integer i1, Integer i2) {
+		int ret = 0;
+		if (i1 != null) {
+			ret += i1;
+		}
+		if (i2 != null) {
+			ret += i2;
+		}
+		return ret;
+	}
 }

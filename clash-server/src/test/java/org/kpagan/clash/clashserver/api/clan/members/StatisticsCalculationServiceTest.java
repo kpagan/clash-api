@@ -60,7 +60,7 @@ public class StatisticsCalculationServiceTest {
 //    public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 
 	public enum DatabasePlayersHeaders {
-		tag, name, clan_tag, member_since, left_clan, donated_from_join, received_from_join, average_week_donations, week_donations_so_far, week_donations_rcv_so_far, rejoined_times, remarks;
+		tag, name, clan_tag, member_since, left_clan, donated_from_join, received_from_join, average_week_donations, week_donations_so_far, week_donations_rcv_so_far, rejoined_times, remarks, average_week_donations_count;
 	}
 
 	public enum ClanMembersHeaders {
@@ -149,6 +149,7 @@ public class StatisticsCalculationServiceTest {
 			member.setDonatedFromJoinDay(parseInt(record.get(DatabasePlayersHeaders.donated_from_join)));
 			member.setReceivedFromJoinDay(parseInt(record.get(DatabasePlayersHeaders.received_from_join)));
 			member.setAverageWeeklyDonations(parseInt(record.get(DatabasePlayersHeaders.average_week_donations)));
+			member.setAverageWeeklyDonationsCount(parseInt(record.get(DatabasePlayersHeaders.average_week_donations_count)));
 			member.setWeekDonationsSoFar(parseInt(record.get(DatabasePlayersHeaders.week_donations_so_far)));
 			member.setWeekDonationsReceivedSoFar(
 					parseInt(record.get(DatabasePlayersHeaders.week_donations_rcv_so_far)));

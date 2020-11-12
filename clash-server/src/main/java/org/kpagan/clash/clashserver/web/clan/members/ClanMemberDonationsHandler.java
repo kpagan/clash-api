@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-import org.kpagan.clash.clashserver.api.clan.war.ClanWarlogService;
-import org.kpagan.clash.clashserver.api.clan.war.WarlogInfo;
+import org.kpagan.clash.clashserver.api.clan.war.CurrentRiverRaceInfo;
+import org.kpagan.clash.clashserver.api.clan.war.CurrentRiverRaceService;
 import org.kpagan.clash.clashserver.domain.ClanMember;
 import org.kpagan.clash.clashserver.domain.ClanMemberRepository;
 import org.kpagan.clash.clashserver.util.ClashUtils;
@@ -29,14 +29,14 @@ public class ClanMemberDonationsHandler implements QueryHandler {
 	private ClanMemberRepository repo;
 
 	@Autowired
-	private ClanWarlogService warlogService;
+	private CurrentRiverRaceService warlogService;
 	
 	@Override
 	public QueryResponse handle(Optional<String> query, Map<String, String> params) {
 		ClanMemberDonationsResponse response = new ClanMemberDonationsResponse();
 
 		if (query.isPresent()) {
-			Future<WarlogInfo> warlogAsync = warlogService.getWarlogAsync(query.get());
+			Future<CurrentRiverRaceInfo> currentRiverRaceAsync = warlogService.getWarlogAsync(query.get());
 			List<ClanMember> members = repo.findByClanTag(ClashUtils.getTag(query.get()));
 			Map<String, ClanMemberInfo> collect = members.stream().map(m -> {
 				ClanMemberInfo info = new ClanMemberInfo();
@@ -44,14 +44,12 @@ public class ClanMemberDonationsHandler implements QueryHandler {
 				return info;
 			}).collect(Collectors.toMap(ClanMemberInfo::getTag, v -> v));
 			try {
-				WarlogInfo warlogInfo = warlogAsync.get();
-				warlogInfo.getItems().stream().flatMap(warinfo -> warinfo.getParticipants().stream()).forEach(participant -> {
+				CurrentRiverRaceInfo currentRiverInfo = currentRiverRaceAsync.get();
+				currentRiverInfo.getClan().getParticipants().forEach(participant -> {
 					ClanMemberInfo memberInfo = collect.get(participant.getTag());
 					if (memberInfo != null) {
-								Integer totalWarDayWins = memberInfo.getTotalWarDayWins() == null
-										? participant.getWins()
-										: memberInfo.getTotalWarDayWins() + participant.getWins();
-						memberInfo.setTotalWarDayWins(totalWarDayWins);
+						int totalFameRepairPoints = ClashUtils.nullSafeAdd(participant.getFame(), participant.getRepairPoints());
+						memberInfo.setCurrentWarPoints(totalFameRepairPoints);
 					}
 				});
 			} catch (Exception e) {

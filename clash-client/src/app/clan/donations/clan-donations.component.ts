@@ -54,11 +54,13 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit 
     { columnDef: 'timesRejoined', header: 'Rejoined', cell: (index: number, row: ClanMemberDonationsModel) => `${row.timesRejoined}` },
     { columnDef: 'leftClan', header: 'Left clan', cell: (index: number, row: ClanMemberDonationsModel) => `${row.leftClan}` },
     // { columnDef: 'remarks', header: 'Remarks', cell: (index: number, row: ClanMemberDonationsModel) => `${row.remarks}` },
-    { columnDef: 'totalWarDayWins', header: 'Last 10 War day wins',
-      cell: (index: number, row: ClanMemberDonationsModel) => `${row.totalWarDayWins}` },
+    { columnDef: 'currentWarPoints', header: 'Fame/Repair points',
+      cell: (index: number, row: ClanMemberDonationsModel) => `${row.currentWarPoints}` 
+    },
   ];
 
-  displayedColumns = this.columns.map(x => x.columnDef);
+  displayedColumns = this.leftMembersToggle.value ? this.columns.map(x => x.columnDef) : this.columns
+       .filter(x => x.columnDef !== 'leftClan').map(x => x.columnDef);
   // displayedColumns = ['index'].concat(this.columns.map(x => x.columnDef));
   dataSource: ClanDonationsDataSource;
 
@@ -78,6 +80,12 @@ export class ClanDonationsComponent extends ClanBaseComponent implements OnInit 
 
   toggleLeftMembers() {
     this.dataSource.toggleFilter(this.leftMembersToggle.value);
+    // show the leftClan column as last column
+    if (this.leftMembersToggle.value) {
+      this.displayedColumns.push('leftClan');
+    } else {
+      this.displayedColumns.pop();
+    }
   }
 
 }

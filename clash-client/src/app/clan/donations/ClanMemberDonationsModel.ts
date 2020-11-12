@@ -13,5 +13,5 @@ export class ClanMemberDonationsModel {
     remarks: string;
     donatedReceivedFromJoinDayRatio: number;
     donatedReceivedSoFarRatio: number;
-    totalWarDayWins: number;
+    currentWarPoints: number;
 }
