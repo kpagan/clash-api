@@ -1,6 +1,6 @@
 import { ErrorStateMatcher } from '@angular/material/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { OnInit } from '@angular/core';
+import { OnInit, Directive } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -10,6 +10,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     }
   }
 
+@Directive()
 export class ClanBaseComponent implements OnInit {
 
     clanTagControl = new FormControl('', [Validators.required]);
