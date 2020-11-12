@@ -26,4 +26,8 @@ export class ClanBaseComponent implements OnInit {
     search() {
         this.cookieService.set('clanTag', this.clanTagControl.value);
     }
+
+    clearSearchField() {
+      this.clanTagControl.setValue('');
+    }
 }
